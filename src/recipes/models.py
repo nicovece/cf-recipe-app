@@ -3,13 +3,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
 class Recipe(models.Model):
-    DIFFICULTY_CHOICES = [
-        ('Easy', 'Easy'),
-        ('Medium', 'Medium'),
-        ('Intermediate', 'Intermediate'),
-        ('Hard', 'Hard'),
-    ]
-    
     recipe_id = models.AutoField(primary_key=True)
     name = models.CharField(
         max_length=120,
@@ -27,7 +20,6 @@ class Recipe(models.Model):
     )
     difficulty = models.CharField(
         max_length=20,
-        choices=DIFFICULTY_CHOICES,
         blank=True,
         help_text="Difficulty level (auto-calculated)"
     )
@@ -96,6 +88,3 @@ class Recipe(models.Model):
     
     def __str__(self):
         return self.name
-    
-    class Meta:
-        ordering = ['name']  # Order recipes alphabetically by name
