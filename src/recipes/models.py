@@ -21,15 +21,18 @@ class Recipe(models.Model):
     difficulty = models.CharField(
         max_length=20,
         blank=True,
-        help_text="Difficulty level (auto-calculated)"
+        editable=False,
+        help_text="Difficulty level (auto-calculated, readonly)"
     )
     likes = models.IntegerField(
         default=0,
-        help_text="Number of likes (auto-calculated)"
+        editable=False,
+        help_text="Number of likes (auto-calculated, readonly)"
     )
     comments = models.TextField(
         blank=True,
-        help_text="User comments (future feature)"
+        editable=False,
+        help_text="User comments (future feature, readonly)"
     )
     references = models.URLField(
         blank=True,
