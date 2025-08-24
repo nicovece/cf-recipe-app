@@ -9,26 +9,44 @@
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen bg-white">
     <!-- Navigation -->
-    <nav>
-        {% block navigation %}
-        <a href="{% url 'recipes:home' %}">Home</a>
-        {% endblock %}
+    <nav class="border-b border-gray-200 shadow-sm bg-alternate_a-100">
+        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'recipes:home' %}" class="text-xl font-semibold text-accent-600">Recipe App</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% block navigation %}
+                    <a href="{% url 'recipes:home' %}"
+                        class="px-3 py-2 text-sm font-medium rounded-md text-accent-800 hover:text-gray-900">Home</a>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
     </nav>
 
     <!-- Main Content -->
-    <main>
-        {% block content %}
-        {% endblock %}
+    <main class="flex flex-1 justify-center items-center">
+        <div class="px-4 mx-auto w-full max-w-7xl sm:px-6 lg:px-8">
+            {% block content %}
+            {% endblock %}
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer>
-        {% block footer %}
-        <p>&copy; 2025 Recipe App</p>
-        {% endblock %}
+    <footer class="bg-white border-t border-gray-200 bg-alternate_a-100">
+        <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="text-sm text-center text-accent-800">
+                {% block footer %}
+                <p>&copy; 2025 Recipe App</p>
+                {% endblock %}
+            </div>
+        </div>
     </footer>
+
+
 </body>
 
 </html>
