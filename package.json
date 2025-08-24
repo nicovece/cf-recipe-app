@@ -1,0 +1,17 @@
+{
+  "name": "cf-recipe-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./src/static/css/input.css -o ./src/static/css/output.css --watch",
+    "build-prod": "tailwindcss -i ./src/static/css/input.css -o ./src/static/css/output.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

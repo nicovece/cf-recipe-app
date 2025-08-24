@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Recipe App{% endblock %}</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        {% block navigation %}
+        <a href="{% url 'recipes:home' %}">Home</a>
+        {% endblock %}
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        {% block footer %}
+        <p>&copy; 2025 Recipe App</p>
+        {% endblock %}
+    </footer>
+</body>
+
+</html>
