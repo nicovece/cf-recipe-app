@@ -26,8 +26,8 @@ recipeapp/
 Thumbs.db
 
 # Django media and static files
-src/media/
-src/static/
+# src/media/  # Commented out for learning - user uploads will be tracked
+# src/static/  # Commented out to allow static files for deployment
 
 # Coverage reports
 htmlcov/
