@@ -38,6 +38,7 @@ class Recipe(models.Model):
         blank=True,
         help_text="Optional reference URL"
     )
+    recipe_image = models.ImageField(upload_to='recipes', default='no_picture.png')
     
     def clean(self):
         """Custom validation method"""
