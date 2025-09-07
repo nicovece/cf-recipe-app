@@ -2,9 +2,10 @@
 module.exports = {
   content: [
     "./src/**/*.html",
-    "./src/**/*.py",
     "./src/templates/**/*.html",
     "./src/recipes/templates/**/*.html",
+    "./src/recipe_project/**/*.py",
+    "./src/recipes/**/*.py",
   ],
   theme: {
     extend: {
