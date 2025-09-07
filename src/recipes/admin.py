@@ -10,7 +10,7 @@ class RecipeAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Basic Information', {
-            'fields': ('name', 'ingredients', 'cooking_time', 'recipe_image')
+            'fields': ('name', 'short_description', 'ingredients', 'cooking_time', 'recipe_image')
         }),
         ('Calculated Fields', {
             'fields': ('difficulty', 'likes', 'comments'),

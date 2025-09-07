@@ -8,6 +8,11 @@ class Recipe(models.Model):
         max_length=120,
         help_text="Enter the recipe name"
     )
+    short_description = models.TextField(
+        max_length=300,
+        blank=True,
+        help_text="Enter a short description of the recipe"
+    )
     ingredients = models.TextField(
         help_text="Enter ingredients (comma separated)"
     )

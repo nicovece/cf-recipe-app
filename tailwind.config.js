@@ -26,10 +26,13 @@ module.exports = {
         alternate_b: '#a9c57c',
         alternate_a: {
           100: '#E2F3EE',
-          300: '#FBCCA6',
+          // 300: '#FBCCA6',
+          300: '#88928F',
           400: '#6fc3aa',
         },
         accent: {
+          100: '#FDE5D3',
+          300: '#F8B27A',
           400: '#F47F21',
           600: '#E36F10',
           800: '#61330D',

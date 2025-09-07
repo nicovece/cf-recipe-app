@@ -3,27 +3,30 @@
 {% block title %}Recipe List - Recipe App{% endblock %}
 
 {% block content %}
-<div class="container py-8 mx-auto bg-alternate_a-100">
-    <h1 class="mb-4 font-serif text-3xl font-bold text-accent-600 text-primary-400">Welcome to our Recipes List!</h1>
+<div class="container py-8 mx-auto mb-12">
+    <h1 class="mt-12 mb-12 font-serif text-3xl font-bold text-accent-600 text-primary-400">Welcome to our Recipes List!
+    </h1>
     {% if recipes %}
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
         {% for recipe in recipes %}
-        <div>
-            <div
-                class="flex overflow-hidden flex-row p-0 w-full max-w-sm bg-white rounded-lg shadow-md transition-all ease-out origin-right-- lg:max-w-full lg:flex recipe-card hover:scale-105 hover:shadow-lg">
-                <div class="w-full sm:w-1/2">
-                    <a href="{% url 'recipes:recipe-detail' recipe.pk %}" class=""><img
-                            src="{{ recipe.recipe_image.url }}" alt="{{ recipe.name }}" class="object-cover w-full h-32"
-                            width="100%" height="auto">
-                    </a>
-                </div>
-                <div class="p-4 mb-4 w-full sm:w-1/2">
-                    <h2 class="mb-4 font-serif text-2xl font-bold text-accent-600 text-primary-400"><a
-                            href="{% url 'recipes:recipe-detail' recipe.pk %}"
-                            class="block mb-1 font-semibold text-accent-600 hover:text-accent-800">{{ recipe.name }}</a>
-                    </h2>
-                    <p class="text-sm text-gray-600">{{ recipe.difficulty }}</p>
-                </div>
+        <div
+            class="flex overflow-hidden flex-row p-0 w-full max-w-sm bg-white rounded-lg shadow-lg transition-all ease-out md:grid md:grid-cols-[35%_65%] lg:max-w-full recipe-card hover:scale-105 hover:shadow-xl">
+            <div class="w-full-">
+                <a href="{% url 'recipes:recipe-detail' recipe.pk %}" class=""><img src="{{ recipe.recipe_image.url }}"
+                        alt="{{ recipe.name }}" class="object-cover w-full h-full aspect-square">
+                </a>
+            </div>
+            <div class="flex flex-col justify-center p-6">
+                <h2 class="mb-1 font-serif text-2xl font-bold text-accent-600 text-primary-400"><a
+                        href="{% url 'recipes:recipe-detail' recipe.pk %}"
+                        class="block mb-1 font-semibold text-accent-600 hover:text-accent-800">{{ recipe.name }}</a>
+                </h2>
+                <p class="text-sm text-gray-600">{{ recipe.short_description }}</p>
+                <!-- <p class="text-sm text-gray-600">{{ recipe.difficulty }}</p>
+                <p class="text-sm text-gray-600">{{ recipe.cooking_time }} minutes</p> -->
+                <a href="{% url 'recipes:recipe-detail' recipe.pk %}"
+                    class="px-4 py-2 mt-4 w-max text-sm font-bold rounded-md transition-all duration-300 text-accent-600 bg-alternate_a-100 hover:text-white hover:bg-accent-400">View
+                    Recipe</a>
             </div>
         </div>
         {% endfor %}

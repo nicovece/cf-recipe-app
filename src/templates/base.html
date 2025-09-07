@@ -20,7 +20,9 @@
                 <div class="flex items-center space-x-4">
                     {% block navigation %}
                     <a href="{% url 'recipes:home' %}"
-                        class="px-3 py-2 text-sm font-medium rounded-md text-accent-800 hover:text-gray-900">Home</a>
+                        class="px-3 py-1 text-sm font-medium rounded-md border-2 transition-all duration-300 border-accent-300 text-accent-600 hover:text-white hover:bg-accent-400 hover:border-accent-400">Home</a>
+                    <a href="{% url 'recipes:recipe-list' %}"
+                        class="px-3 py-1 text-sm font-medium rounded-md border-2 transition-all duration-300 border-accent-300 text-accent-600 hover:text-white hover:bg-accent-400 hover:border-accent-400">Recipes</a>
                     {% endblock %}
                 </div>
             </div>
