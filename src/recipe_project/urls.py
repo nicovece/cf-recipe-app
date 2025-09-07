@@ -31,3 +31,7 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Serve static files during development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+    # Add browser reload URLs for development
+    urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
+    ]
