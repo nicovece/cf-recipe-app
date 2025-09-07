@@ -3,10 +3,27 @@
 {% block title %}Home - Recipe App{% endblock %}
 
 {% block content %}
-<div class="py-8 text-center">
-    <h1 class="mb-4 font-serif text-3xl font-bold text-accent-600 text-primary-400">Welcome to our Recipes
-        Home</h1>
-    <p class="text-accent-800">Discover, create, and share your favorite recipes</p>
-    <a href="{% url 'recipes:recipe-list' %}" class="text-accent-800">View Recipes</a>
+<!-- Hero Section -->
+<div class="flex overflow-hidden fixed inset-0 justify-center items-center">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="http://127.0.0.1:8000/media/recipes/jez-timms-BHD2OxkYGSk-unsplash.jpg" alt="Delicious food"
+            class="object-cover w-full h-full">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 px-4 mx-auto max-w-4xl text-center text-white">
+        <h1 class="mb-6 font-serif text-3xl font-bold md:text-6xl lg:text-5xl">
+            Welcome to Recipe App
+        </h1>
+        <p class="mb-8 text-xl opacity-90 md:text-2xl">
+            Discover, create, and share your favorite recipes
+        </p>
+        <a href="{% url 'recipes:recipe-list' %}"
+            class="inline-block px-8 py-4 text-lg font-bold text-white rounded-lg shadow-lg transition-all duration-300 bg-accent-400 hover:bg-accent-50 hover:scale-105 hover:bg-accent-600">
+            Explore Recipes
+        </a>
+    </div>
 </div>
 {% endblock %}
