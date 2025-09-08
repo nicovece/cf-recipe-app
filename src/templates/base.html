@@ -38,7 +38,7 @@
 
     <!-- Footer -->
     <footer
-        class="fixed right-0 bottom-0 left-0 z-50 {% if request.resolver_match.url_name == 'home' %}bg-alternate_a-800/70 backdrop-blur-sm text-accent-300{% else %}bg-alternate_a-100 border-t border-gray-200 text-accent-800{% endif %}">
+        class="{% if request.resolver_match.url_name == 'home' %}fixed right-0 z-50 bottom-0 left-0 bg-alternate_a-800/70 backdrop-blur-sm text-accent-300{% else %}bg-alternate_a-100 border-t border-gray-200 text-accent-800{% endif %}">
         <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="text-sm text-center">
                 {% block footer %}
