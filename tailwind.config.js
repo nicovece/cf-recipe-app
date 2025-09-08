@@ -26,8 +26,8 @@ module.exports = {
         alternate_b: '#a9c57c',
         alternate_a: {
           100: '#E2F3EE',
-          // 300: '#FBCCA6',
-          300: '#88928F',
+          200: '#BAE2D6',
+          300: '#8CCFBB',
           400: '#6fc3aa',
           800: '#162722',
         },
@@ -42,6 +42,9 @@ module.exports = {
       },
       fontFamily: {
         serif: ['Merriweather', 'serif'],
+      },
+      aspectRatio: {
+        '4/3': '4 / 3',
       },
     },
   },

@@ -3,14 +3,15 @@
 {% block title %}Recipe List - Recipe App{% endblock %}
 
 {% block content %}
-<div class="container py-8 pt-20 pb-20 mx-auto mb-12">
-    <h1 class="mt-12 mb-12 font-serif text-3xl font-bold text-accent-600 text-primary-400">Welcome to our Recipes List!
+<div class="container px-6 pt-20 pb-20 mx-auto mb-12">
+    <h1 class="mt-12 mb-12 font-serif text-2xl font-bold sm:text-3xl text-accent-600 text-primary-400">Welcome to our
+        Recipes List!
     </h1>
     {% if recipes %}
     <div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
         {% for recipe in recipes %}
         <div
-            class="flex overflow-hidden flex-row p-0 w-full max-w-sm bg-white rounded-lg shadow-lg transition-all ease-out md:grid md:grid-cols-[35%_65%] lg:max-w-full recipe-card hover:scale-105 hover:shadow-xl">
+            class="flex overflow-hidden flex-col p-0 w-full max-w-sm bg-white rounded-lg shadow-lg transition-all ease-out lg:grid lg:grid-cols-[35%_65%] lg:max-w-full recipe-card hover:scale-105 hover:shadow-xl">
             <div class="w-full-">
                 <a href="{% url 'recipes:recipe-detail' recipe.pk %}" class=""><img src="{{ recipe.recipe_image.url }}"
                         alt="{{ recipe.name }}" class="object-cover w-full h-full aspect-square">
