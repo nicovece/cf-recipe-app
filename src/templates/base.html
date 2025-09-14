@@ -1,4 +1,5 @@
 {% load static %}
+{% load recipe_extras %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +13,7 @@
 <body class="relative min-h-screen bg-white">
     <!-- Navigation -->
     <nav
-        class="fixed top-0 right-0 left-0 z-50 {% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'login'  %}bg-alternate_a-800/70 backdrop-blur-sm{% else %}bg-alternate_a-100{% endif %}">
+        class="fixed top-0 right-0 left-0 z-50 {% get_nav_classes 'bg-alternate_a-800/70 backdrop-blur-sm' 'bg-alternate_a-100' %}">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -21,9 +22,21 @@
                 <div class="flex items-center space-x-4">
                     {% block navigation %}
                     <a href="{% url 'recipes:home' %}"
-                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'login'  %}text-accent-300{% else %}text-accent-600{% endif %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">Home</a>
+                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">Home</a>
                     <a href="{% url 'recipes:recipe-list' %}"
-                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'login'  %}text-accent-300{% else %}text-accent-600{% endif %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">Recipes</a>
+                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">Recipes</a>
+
+                    {% if user.is_authenticated %}
+                    <span
+                        class="ml-12 py-1 pl-3 text-sm font-medium {% get_nav_classes 'text-accent-300 border-l border-alternate_a-700' 'text-accent-800 border-l border-alternate_a-300' %} ">Hi,
+                        {{ user.username }}!</span> <a href="{%url 'logout' %}"
+                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">
+                        Logout </a>
+                    {% else %}
+                    <a href="{%url 'login' %}"
+                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">
+                        Login </a>
+                    {% endif %}
                     {% endblock %}
                 </div>
             </div>
@@ -37,8 +50,7 @@
     </main>
 
     <!-- Footer -->
-    <footer
-        class="{% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'login' %}fixed right-0 z-50 bottom-0 left-0 bg-alternate_a-800/70 backdrop-blur-sm text-accent-300{% else %}bg-alternate_a-100 border-t border-gray-200 text-accent-800{% endif %}">
+    <footer class="{% get_footer_classes %}">
         <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="text-sm text-center">
                 {% block footer %}
