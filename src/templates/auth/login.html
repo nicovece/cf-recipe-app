@@ -1,0 +1,58 @@
+<!-- htmlhint doctype-first:false -->
+{% extends 'base.html' %}
+
+{% block title %}Recipe List - Recipe App{% endblock %}
+
+{% block content %}
+<div class="flex overflow-hidden fixed inset-0 justify-center items-center">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="http://127.0.0.1:8000/media/recipes/jez-timms-BHD2OxkYGSk-unsplash.jpg" alt="Delicious food"
+            class="object-cover w-full h-full">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    </div>
+
+    <div
+        class="relative z-10 p-8 mx-8 w-full max-w-lg text-center text-white bg-opacity-70 rounded-lg bg-alternate_a-800">
+        <h1 class="mb-6 font-serif text-3xl font-bold md:text-4xl lg:text-2xl">
+            Login to Recipe App
+        </h1>
+        {% if error_message %}
+        <p class="mb-8 text-xl bg-red-500 opacity-90 md:text-2xl">{{error_message}}</p>
+        {% endif %}
+        <form action="" method="POST" class="space-y-6">
+            {% comment %} add Django security token {% endcomment %}
+            {% csrf_token %}
+
+            {% comment %} Display non-field errors (like authentication failures) {% endcomment %}
+            {% if form.non_field_errors %}
+            <div class="errorlist nonfield">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            {% comment %} Display form fields with styling {% endcomment %}
+            <div class="mb-6 space-y-6">
+                {% for field in form %}
+                <div class="space-y-1">
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="errorlist field-errors">
+                        {{ field.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            {% comment %} add button {% endcomment %}
+            <button type="submit"
+                class="inline-block px-8 py-4 text-lg font-bold text-white rounded-lg shadow-lg transition-all duration-300 bg-accent-400 hover:bg-accent-50 hover:scale-105 hover:bg-accent-600">Login</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

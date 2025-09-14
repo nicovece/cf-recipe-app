@@ -8,3 +8,61 @@
     /* font-family: 'Inter', system-ui, sans-serif; */
   }
 }
+
+/* Django form error styling */
+@layer components {
+  .errorlist {
+    @apply p-0 m-0 list-none;
+  }
+
+  .errorlist li {
+    @apply p-2 mt-1 text-sm text-red-600 bg-red-50 rounded-md border border-red-200;
+  }
+
+  .errorlist.nonfield li {
+    @apply font-medium text-red-700 bg-red-100 border-red-300;
+  }
+
+  .errorlist.field-errors li {
+    @apply text-red-600 bg-red-50 border-red-200;
+  }
+
+  /* Form field styling */
+  .form-field {
+    @apply px-4 py-2 w-full text-gray-900 bg-white rounded-lg border border-gray-300 transition-colors duration-200 focus:ring-2 focus:ring-accent-400 focus:border-accent-400;
+  }
+
+  .form-field:focus {
+    @apply outline-none;
+  }
+
+  .form-label {
+    @apply block mb-1 text-sm font-medium text-white;
+  }
+
+  /* Alternative error styling with your color scheme */
+  .errorlist.nonfield li {
+    @apply text-accent-100 bg-accent-800 border-accent-600;
+  }
+
+  /* Success message styling */
+  .success-message {
+    @apply p-3 text-sm text-green-700 bg-green-100 rounded-md border border-green-300;
+  }
+
+  /* Info message styling */
+  .info-message {
+    @apply p-3 text-sm text-blue-700 bg-blue-100 rounded-md border border-blue-300;
+  }
+
+  /* Style default Django form inputs */
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='number'],
+  input[type='url'],
+  textarea,
+  select {
+    @apply form-field;
+  }
+}
