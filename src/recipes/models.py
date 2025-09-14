@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
 class Recipe(models.Model):
-    recipe_id = models.AutoField(primary_key=True)
     name = models.CharField(
         max_length=120,
         help_text="Enter the recipe name"
