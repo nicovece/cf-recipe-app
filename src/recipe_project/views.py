@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect("recipes:recipe-list")
+        
     error_message=None
     form = AuthenticationForm()
 
@@ -27,7 +31,7 @@ def login_view(request):
     }
     return render(request, "auth/login.html", context)
 
-
+@login_required
 def logout_view(request):
     logout(request)
     return render(request, "auth/logout.html")
