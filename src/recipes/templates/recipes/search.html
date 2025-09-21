@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Recipe Search - Recipe App{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    .search-results-table th,
+    .search-results-table td {
+        border: 1px solid #e5e7eb;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .search-results-table th {
+        background-color: #f9fafb;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .search-results-table tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+
+    .search-results-table tr:hover {
+        background-color: #f3f4f6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container px-6 pt-20 pb-20 mx-auto mb-12">
+    <h1 class="mt-12 mb-8 font-serif text-3xl font-bold text-accent-600 text-primary-400">
+        Search Recipes & Analyze Data
+    </h1>
+
+    <!-- Search Form -->
+    <div class="p-6 mb-8 bg-white rounded-lg shadow-lg">
+        <h2 class="mb-4 text-xl font-semibold text-accent-600">Search Criteria</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div>
+                    <label for="{{ form.recipe_name.id_for_label }}"
+                        class="block mb-1 text-sm font-medium text-gray-700">
+                        Recipe Name
+                    </label>
+                    {{ form.recipe_name }}
+                    {% if form.recipe_name.help_text %}
+                    <p class="mt-1 text-xs text-gray-500">{{ form.recipe_name.help_text }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ form.ingredients.id_for_label }}"
+                        class="block mb-1 text-sm font-medium text-gray-700">
+                        Ingredients
+                    </label>
+                    {{ form.ingredients }}
+                    {% if form.ingredients.help_text %}
+                    <p class="mt-1 text-xs text-gray-500">{{ form.ingredients.help_text }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ form.cooking_time_max.id_for_label }}"
+                        class="block mb-1 text-sm font-medium text-gray-700">
+                        Max Cooking Time (minutes)
+                    </label>
+                    {{ form.cooking_time_max }}
+                </div>
+
+                <div>
+                    <label for="{{ form.difficulty.id_for_label }}"
+                        class="block mb-1 text-sm font-medium text-gray-700">
+                        Difficulty Level
+                    </label>
+                    {{ form.difficulty }}
+                </div>
+
+                <div>
+                    <label for="{{ form.chart_type.id_for_label }}"
+                        class="block mb-1 text-sm font-medium text-gray-700">
+                        Chart Type
+                    </label>
+                    {{ form.chart_type }}
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-6">
+                <button type="submit" name="search_action" value="search"
+                    class="px-6 py-3 font-bold text-white rounded-lg transition-all duration-300 bg-accent-600 hover:bg-accent-700">
+                    Search & Analyze
+                </button>
+                <button type="submit" name="search_action" value="show_all"
+                    class="px-6 py-3 font-bold bg-green-600 rounded-lg transition-all duration-300 text-accent-600 hover:bg-green-700">
+                    Analyze All Recipes
+                </button>
+            </div>
+
+            <div class="mt-4 text-sm text-gray-600">
+                <p>• <strong>Search & Analyze:</strong> Use the form fields above to filter recipes</p>
+                <p>• <strong>Analyze All Recipes:</strong> Generate analysis for all recipes in the database</p>
+                <p>• <a href="{% url 'recipes:recipe-list' %}" class="text-accent-600 hover:underline">Browse all
+                        recipes in list format</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Search Results -->
+    {% if recipes_df %}
+    <div class="mb-8">
+        <h2 class="mb-4 text-xl font-semibold text-accent-600">Search Results</h2>
+        <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
+            <div class="p-4">
+                {{ recipes_df|safe }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Chart Display -->
+    {% if chart %}
+    <div class="mb-8">
+        <h2 class="mb-4 text-xl font-semibold text-accent-600">Data Visualization</h2>
+        <div class="p-6 text-center bg-white rounded-lg shadow-lg">
+            <img src="data:image/png;base64, {{ chart|safe }}" alt="Recipe Analysis Chart"
+                class="mx-auto max-w-full h-auto">
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- No Results Message -->
+    {% if not recipes_df and request.method == "POST" %}
+    <div class="p-6 mb-8 bg-yellow-50 rounded-lg border border-yellow-200">
+        <h3 class="mb-2 text-lg font-semibold text-yellow-800">No Recipes Found</h3>
+        <p class="text-yellow-700">Try adjusting your search criteria or <a href="{% url 'recipes:recipe-list' %}"
+                class="text-accent-600 hover:underline">view all recipes</a>.</p>
+    </div>
+    {% endif %}
+
+    <!-- Instructions -->
+    <div class="p-6 mt-8 bg-blue-50 rounded-lg border border-blue-200">
+        <h3 class="mb-2 text-lg font-semibold text-blue-800">Search Tips</h3>
+        <ul class="space-y-1 text-blue-700">
+            <li>• <strong>Partial matching:</strong> "pasta" will find "Pasta al Pesto"</li>
+            <li>• <strong>Wildcard *:</strong> "pasta*" finds "pasta", "pastas", "pasta-based"</li>
+            <li>• <strong>Wildcard ?:</strong> "pasta?" finds "pasta" but not "pastas"</li>
+            <li>• <strong>Multiple ingredients:</strong> Enter "tomato*, cheese" to find recipes with both</li>
+            <li>• <strong>Time filtering:</strong> Enter 10 to find recipes taking 10 minutes or less</li>
+            <li>• <strong>Show all:</strong> Leave fields empty to see all recipes</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
