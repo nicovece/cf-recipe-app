@@ -4,12 +4,19 @@ from django.core.exceptions import ValidationError
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django import forms
 from PIL import Image
 import tempfile
 import os
 from .models import Recipe
 from .admin import RecipeAdmin
-from .views import HomeView, RecipeListView, RecipeDetailView
+from .views import HomeView, RecipeListView, RecipeDetailView, recipe_search, process_wildcard_search
+from .forms import RecipeSearchForm
+from .utils import get_chart, get_graph
+import pandas as pd
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 class RecipeModelTest(TestCase):
     def test_recipe_str_method(self):
@@ -175,8 +182,8 @@ class RecipeModelTest(TestCase):
     def test_recipe_model_meta(self):
         """Test that the model has proper meta configuration"""
         recipe = Recipe(name="Meta Test", ingredients="Test", cooking_time=10)
-        self.assertEqual(recipe.recipe_id, None)  # AutoField, not set until saved
-        self.assertTrue(hasattr(recipe, 'recipe_id'))  # Should have the field
+        self.assertEqual(recipe.id, None)  # AutoField, not set until saved
+        self.assertTrue(hasattr(recipe, 'id'))  # Should have the field
 
     def test_validation_empty_name(self):
         """Test validation fails with empty name"""
@@ -324,6 +331,12 @@ class RecipeViewTest(TestCase):
         """Set up test data"""
         self.client = Client()
         
+        # Create test user
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
+        )
+        
         # Create test recipes
         self.recipe1 = Recipe.objects.create(
             name="Test Recipe 1",
@@ -348,6 +361,7 @@ class RecipeViewTest(TestCase):
 
     def test_recipe_list_view(self):
         """Test RecipeListView renders correctly with recipes"""
+        self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('recipes:recipe-list'))
         
         self.assertEqual(response.status_code, 200)
@@ -359,6 +373,7 @@ class RecipeViewTest(TestCase):
 
     def test_recipe_list_view_empty(self):
         """Test RecipeListView with no recipes"""
+        self.client.login(username='testuser', password='testpass123')
         # Delete all recipes
         Recipe.objects.all().delete()
         
@@ -371,6 +386,7 @@ class RecipeViewTest(TestCase):
 
     def test_recipe_detail_view(self):
         """Test RecipeDetailView renders correctly"""
+        self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('recipes:recipe-detail', kwargs={'pk': self.recipe1.pk}))
         
         self.assertEqual(response.status_code, 200)
@@ -380,12 +396,14 @@ class RecipeViewTest(TestCase):
 
     def test_recipe_detail_view_not_found(self):
         """Test RecipeDetailView with non-existent recipe"""
+        self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('recipes:recipe-detail', kwargs={'pk': 999}))
         
         self.assertEqual(response.status_code, 404)
 
     def test_recipe_detail_view_context(self):
         """Test RecipeDetailView context contains correct data"""
+        self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('recipes:recipe-detail', kwargs={'pk': self.recipe1.pk}))
         
         recipe = response.context['recipe']
@@ -397,6 +415,7 @@ class RecipeViewTest(TestCase):
 
     def test_recipe_list_view_context(self):
         """Test RecipeListView context contains correct data"""
+        self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('recipes:recipe-list'))
         
         recipes = response.context['recipes']
@@ -448,6 +467,13 @@ class RecipeTemplateTest(TestCase):
     def setUp(self):
         """Set up test data"""
         self.client = Client()
+        
+        # Create test user
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
+        )
+        
         self.recipe = Recipe.objects.create(
             name="Template Test Recipe",
             ingredients="Ingredient1, Ingredient2, Ingredient3",
@@ -465,6 +491,7 @@ class RecipeTemplateTest(TestCase):
 
     def test_recipe_list_template_content(self):
         """Test recipe list template renders expected content"""
+        self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('recipes:recipe-list'))
         
         self.assertEqual(response.status_code, 200)
@@ -477,6 +504,7 @@ class RecipeTemplateTest(TestCase):
 
     def test_recipe_list_template_no_recipes(self):
         """Test recipe list template with no recipes"""
+        self.client.login(username='testuser', password='testpass123')
         Recipe.objects.all().delete()
         
         response = self.client.get(reverse('recipes:recipe-list'))
@@ -486,6 +514,7 @@ class RecipeTemplateTest(TestCase):
 
     def test_recipe_detail_template_content(self):
         """Test recipe detail template renders expected content"""
+        self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('recipes:recipe-detail', kwargs={'pk': self.recipe.pk}))
         
         self.assertEqual(response.status_code, 200)
@@ -503,6 +532,7 @@ class RecipeTemplateTest(TestCase):
 
     def test_recipe_detail_template_without_reference(self):
         """Test recipe detail template without reference URL"""
+        self.client.login(username='testuser', password='testpass123')
         self.recipe.references = ""
         self.recipe.save()
         
@@ -513,6 +543,7 @@ class RecipeTemplateTest(TestCase):
 
     def test_recipe_detail_template_without_short_description(self):
         """Test recipe detail template without short description"""
+        self.client.login(username='testuser', password='testpass123')
         self.recipe.short_description = ""
         self.recipe.save()
         
@@ -628,3 +659,578 @@ class RecipeAdminTest(TestCase):
         self.assertContains(response, '30')
         self.assertContains(response, 'Intermediate')  # Readonly field
         self.assertContains(response, '0')  # Readonly field
+
+
+class RecipeSearchFormTest(TestCase):
+    def setUp(self):
+        """Set up test data"""
+        self.form = RecipeSearchForm()
+
+    def test_form_fields(self):
+        """Test that form has all required fields"""
+        expected_fields = ['recipe_name', 'ingredients', 'cooking_time_max', 'difficulty', 'chart_type']
+        for field in expected_fields:
+            self.assertIn(field, self.form.fields)
+
+    def test_form_field_types(self):
+        """Test that form fields have correct types"""
+        self.assertIsInstance(self.form.fields['recipe_name'], forms.CharField)
+        self.assertIsInstance(self.form.fields['ingredients'], forms.CharField)
+        self.assertIsInstance(self.form.fields['cooking_time_max'], forms.IntegerField)
+        self.assertIsInstance(self.form.fields['difficulty'], forms.ChoiceField)
+        self.assertIsInstance(self.form.fields['chart_type'], forms.ChoiceField)
+
+    def test_form_field_required(self):
+        """Test that form fields have correct required settings"""
+        self.assertFalse(self.form.fields['recipe_name'].required)
+        self.assertFalse(self.form.fields['ingredients'].required)
+        self.assertFalse(self.form.fields['cooking_time_max'].required)
+        self.assertFalse(self.form.fields['difficulty'].required)
+        self.assertTrue(self.form.fields['chart_type'].required)
+
+    def test_form_field_max_lengths(self):
+        """Test that form fields have correct max lengths"""
+        self.assertEqual(self.form.fields['recipe_name'].max_length, 120)
+        self.assertEqual(self.form.fields['ingredients'].max_length, 200)
+
+    def test_form_field_choices(self):
+        """Test that form fields have correct choices"""
+        # Test difficulty choices
+        difficulty_choices = self.form.fields['difficulty'].choices
+        expected_difficulties = ['', 'Easy', 'Medium', 'Intermediate', 'Hard']
+        for choice in difficulty_choices:
+            self.assertIn(choice[0], expected_difficulties)
+
+        # Test chart type choices
+        chart_choices = self.form.fields['chart_type'].choices
+        expected_charts = ['#1', '#2', '#3']
+        for choice in chart_choices:
+            self.assertIn(choice[0], expected_charts)
+
+    def test_form_field_help_text(self):
+        """Test that form fields have help text"""
+        self.assertIsNotNone(self.form.fields['recipe_name'].help_text)
+        self.assertIsNotNone(self.form.fields['ingredients'].help_text)
+        self.assertIn('characters', self.form.fields['recipe_name'].help_text.lower())
+        self.assertIn('characters', self.form.fields['ingredients'].help_text.lower())
+
+    def test_form_field_placeholders(self):
+        """Test that form fields have placeholders"""
+        recipe_name_widget = self.form.fields['recipe_name'].widget
+        ingredients_widget = self.form.fields['ingredients'].widget
+        
+        self.assertIn('placeholder', recipe_name_widget.attrs)
+        self.assertIn('placeholder', ingredients_widget.attrs)
+        self.assertIn('wildcard', recipe_name_widget.attrs['placeholder'].lower())
+
+    def test_form_validation_valid_data(self):
+        """Test form validation with valid data"""
+        form_data = {
+            'recipe_name': 'pasta',
+            'ingredients': 'tomato, cheese',
+            'cooking_time_max': 30,
+            'difficulty': 'Easy',
+            'chart_type': '#1'
+        }
+        form = RecipeSearchForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_form_validation_empty_data(self):
+        """Test form validation with empty data (should be valid)"""
+        form_data = {
+            'chart_type': '#1'  # Only required field
+        }
+        form = RecipeSearchForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_form_validation_missing_required_field(self):
+        """Test form validation with missing required field"""
+        form_data = {
+            'recipe_name': 'pasta'
+        }
+        form = RecipeSearchForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('chart_type', form.errors)
+
+    def test_form_validation_invalid_cooking_time(self):
+        """Test form validation with invalid cooking time"""
+        form_data = {
+            'cooking_time_max': 0,  # Below minimum
+            'chart_type': '#1'
+        }
+        form = RecipeSearchForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('cooking_time_max', form.errors)
+
+    def test_form_validation_cooking_time_too_high(self):
+        """Test form validation with cooking time too high"""
+        form_data = {
+            'cooking_time_max': 1441,  # Above maximum
+            'chart_type': '#1'
+        }
+        form = RecipeSearchForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('cooking_time_max', form.errors)
+
+    def test_form_validation_invalid_difficulty(self):
+        """Test form validation with invalid difficulty"""
+        form_data = {
+            'difficulty': 'Invalid',
+            'chart_type': '#1'
+        }
+        form = RecipeSearchForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('difficulty', form.errors)
+
+    def test_form_validation_invalid_chart_type(self):
+        """Test form validation with invalid chart type"""
+        form_data = {
+            'chart_type': 'invalid'
+        }
+        form = RecipeSearchForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('chart_type', form.errors)
+
+
+class RecipeSearchViewTest(TestCase):
+    def setUp(self):
+        """Set up test data"""
+        self.client = Client()
+        
+        # Create test user
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
+        )
+        
+        # Create test recipes
+        self.recipe1 = Recipe.objects.create(
+            name="Pasta al Pesto",
+            ingredients="pasta, pesto, cheese, garlic",
+            cooking_time=10,
+            difficulty="Hard"
+        )
+        
+        self.recipe2 = Recipe.objects.create(
+            name="Pizza Margherita",
+            ingredients="dough, tomato, cheese, basil",
+            cooking_time=5,
+            difficulty="Medium"
+        )
+        
+        self.recipe3 = Recipe.objects.create(
+            name="Summer Salad",
+            ingredients="lettuce, tomato, cucumber, olive oil",
+            cooking_time=15,
+            difficulty="Hard"
+        )
+
+    def test_search_view_login_required(self):
+        """Test that search view requires login"""
+        response = self.client.get(reverse('recipes:recipe-search'))
+        self.assertEqual(response.status_code, 302)  # Redirect to login
+
+    def test_search_view_get_request(self):
+        """Test search view with GET request"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('recipes:recipe-search'))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'recipes/search.html')
+        self.assertIn('form', response.context)
+        self.assertIsNone(response.context['recipes_df'])
+        self.assertIsNone(response.context['chart'])
+
+    def test_search_view_post_empty_search(self):
+        """Test search view with empty search (should show all recipes)"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIn('chart', response.context)
+        self.assertIsNotNone(response.context['recipes_df'])
+        self.assertIsNotNone(response.context['chart'])
+
+    def test_search_view_post_show_all(self):
+        """Test search view with show all action"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'show_all',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIn('chart', response.context)
+        self.assertIsNotNone(response.context['recipes_df'])
+        self.assertIsNotNone(response.context['chart'])
+
+    def test_search_view_recipe_name_filter(self):
+        """Test search view with recipe name filter"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'recipe_name': 'pasta',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIsNotNone(response.context['recipes_df'])
+        # Should contain "Pasta al Pesto" but not "Pizza Margherita" or "Summer Salad"
+
+    def test_search_view_ingredients_filter(self):
+        """Test search view with ingredients filter"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'ingredients': 'tomato',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIsNotNone(response.context['recipes_df'])
+        # Should contain recipes with tomato in ingredients
+
+    def test_search_view_cooking_time_filter(self):
+        """Test search view with cooking time filter"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'cooking_time_max': 10,
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIsNotNone(response.context['recipes_df'])
+        # Should contain recipes with cooking time <= 10 minutes
+
+    def test_search_view_difficulty_filter(self):
+        """Test search view with difficulty filter"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'difficulty': 'Hard',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIsNotNone(response.context['recipes_df'])
+        # Should contain only Hard difficulty recipes
+
+    def test_search_view_multiple_filters(self):
+        """Test search view with multiple filters"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'recipe_name': 'pasta',
+            'cooking_time_max': 15,
+            'difficulty': 'Hard',
+            'chart_type': '#2'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIsNotNone(response.context['recipes_df'])
+
+    def test_search_view_no_results(self):
+        """Test search view with no matching results"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'recipe_name': 'nonexistent',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('recipes_df', response.context)
+        self.assertIsNone(response.context['recipes_df'])
+        self.assertIsNone(response.context['chart'])
+
+    def test_search_view_chart_generation(self):
+        """Test that charts are generated correctly"""
+        self.client.login(username='testuser', password='testpass123')
+        
+        # Test bar chart
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'show_all',
+            'chart_type': '#1'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['chart'])
+        
+        # Test pie chart
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'show_all',
+            'chart_type': '#2'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['chart'])
+        
+        # Test line chart
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'show_all',
+            'chart_type': '#3'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['chart'])
+
+
+class WildcardSearchTest(TestCase):
+    def setUp(self):
+        """Set up test data"""
+        self.recipe1 = Recipe.objects.create(
+            name="Pasta al Pesto",
+            ingredients="pasta, pesto, cheese",
+            cooking_time=10
+        )
+        
+        self.recipe2 = Recipe.objects.create(
+            name="Pasta alla Carbonara",
+            ingredients="pasta, eggs, cheese",
+            cooking_time=15
+        )
+        
+        self.recipe3 = Recipe.objects.create(
+            name="Pizza Margherita",
+            ingredients="dough, tomato, cheese",
+            cooking_time=5
+        )
+
+    def test_process_wildcard_search_empty(self):
+        """Test wildcard search with empty input"""
+        result = process_wildcard_search("")
+        self.assertIsNone(result)
+        
+        result = process_wildcard_search(None)
+        self.assertIsNone(result)
+
+    def test_process_wildcard_search_regular_text(self):
+        """Test wildcard search with regular text (no wildcards)"""
+        result = process_wildcard_search("pasta")
+        self.assertIsNotNone(result)
+        # Should return a Q object for icontains
+
+    def test_process_wildcard_search_asterisk(self):
+        """Test wildcard search with asterisk wildcard"""
+        result = process_wildcard_search("pasta*")
+        self.assertIsNotNone(result)
+        # Should return a Q object for iregex
+
+    def test_process_wildcard_search_question_mark(self):
+        """Test wildcard search with question mark wildcard"""
+        result = process_wildcard_search("pasta?")
+        self.assertIsNotNone(result)
+        # Should return a Q object for iregex
+
+    def test_process_wildcard_search_multiple_wildcards(self):
+        """Test wildcard search with multiple wildcards"""
+        result = process_wildcard_search("pasta*?")
+        self.assertIsNotNone(result)
+        # Should return a Q object for iregex
+
+    def test_wildcard_search_functionality(self):
+        """Test that wildcard search actually works with database queries"""
+        # Test asterisk wildcard
+        qs = Recipe.objects.filter(name__iregex="pasta.*")
+        self.assertIn(self.recipe1, qs)
+        self.assertIn(self.recipe2, qs)
+        self.assertNotIn(self.recipe3, qs)
+        
+        # Test question mark wildcard
+        qs = Recipe.objects.filter(name__iregex="pasta.")
+        # This should match "pasta" followed by exactly one character
+        # "Pasta al Pesto" and "Pasta alla Carbonara" both start with "Pasta " (6 chars)
+        # So this might not match as expected, but the regex should work
+
+    def test_ingredients_wildcard_search(self):
+        """Test wildcard search with ingredients"""
+        # Test asterisk wildcard in ingredients
+        qs = Recipe.objects.filter(ingredients__iregex="pasta.*")
+        self.assertIn(self.recipe1, qs)
+        self.assertIn(self.recipe2, qs)
+        self.assertNotIn(self.recipe3, qs)
+
+
+class ChartUtilsTest(TestCase):
+    def setUp(self):
+        """Set up test data"""
+        # Create test DataFrame
+        self.test_data = pd.DataFrame({
+            'name': ['Recipe 1', 'Recipe 2', 'Recipe 3'],
+            'cooking_time': [10, 15, 20],
+            'difficulty': ['Easy', 'Medium', 'Hard'],
+            'ingredient_count': [3, 5, 7]
+        })
+
+    def test_get_graph_function(self):
+        """Test that get_graph function returns base64 string"""
+        # Create a simple plot
+        plt.figure()
+        plt.plot([1, 2, 3], [1, 4, 2])
+        plt.title("Test Chart")
+        
+        # Get the graph
+        result = get_graph()
+        
+        # Should return a base64 string
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+        
+        # Should be valid base64
+        try:
+            decoded = base64.b64decode(result)
+            self.assertIsInstance(decoded, bytes)
+        except Exception:
+            self.fail("get_graph() did not return valid base64")
+
+    def test_get_chart_bar_chart(self):
+        """Test bar chart generation"""
+        result = get_chart('#1', self.test_data)
+        
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+        
+        # Should be valid base64
+        try:
+            decoded = base64.b64decode(result)
+            self.assertIsInstance(decoded, bytes)
+        except Exception:
+            self.fail("get_chart() did not return valid base64 for bar chart")
+
+    def test_get_chart_pie_chart(self):
+        """Test pie chart generation"""
+        result = get_chart('#2', self.test_data)
+        
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+        
+        # Should be valid base64
+        try:
+            decoded = base64.b64decode(result)
+            self.assertIsInstance(decoded, bytes)
+        except Exception:
+            self.fail("get_chart() did not return valid base64 for pie chart")
+
+    def test_get_chart_line_chart(self):
+        """Test line chart generation"""
+        result = get_chart('#3', self.test_data)
+        
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+        
+        # Should be valid base64
+        try:
+            decoded = base64.b64decode(result)
+            self.assertIsInstance(decoded, bytes)
+        except Exception:
+            self.fail("get_chart() did not return valid base64 for line chart")
+
+    def test_get_chart_invalid_type(self):
+        """Test chart generation with invalid chart type"""
+        result = get_chart('invalid', self.test_data)
+        
+        # Should still return something (empty chart or error chart)
+        self.assertIsInstance(result, str)
+
+    def test_chart_with_empty_data(self):
+        """Test chart generation with empty DataFrame"""
+        empty_data = pd.DataFrame()
+        
+        # This might raise an exception, which is expected
+        with self.assertRaises((KeyError, IndexError, ValueError)):
+            get_chart('#1', empty_data)
+
+
+class RecipeSearchURLTest(TestCase):
+    def test_recipe_search_url(self):
+        """Test recipe search URL pattern"""
+        url = reverse('recipes:recipe-search')
+        self.assertEqual(url, '/search/')
+        
+        # Test URL resolution
+        resolved = resolve('/search/')
+        self.assertEqual(resolved.func, recipe_search)
+
+    def test_recipe_search_url_namespace(self):
+        """Test that recipe search URL uses correct namespace"""
+        self.assertEqual(reverse('recipes:recipe-search'), '/search/')
+
+
+class RecipeSearchTemplateTest(TestCase):
+    def setUp(self):
+        """Set up test data"""
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
+        )
+        
+        self.recipe = Recipe.objects.create(
+            name="Template Test Recipe",
+            ingredients="ingredient1, ingredient2",
+            cooking_time=30,
+            difficulty="Hard"
+        )
+
+    def test_search_template_content(self):
+        """Test search template renders expected content"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('recipes:recipe-search'))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Search Recipes & Analyze Data')
+        self.assertContains(response, 'Search Criteria')
+        self.assertContains(response, 'Search & Analyze')
+        self.assertContains(response, 'Analyze All Recipes')
+        self.assertContains(response, 'Browse all')
+
+    def test_search_template_form_fields(self):
+        """Test search template contains all form fields"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('recipes:recipe-search'))
+        
+        self.assertContains(response, 'recipe_name')
+        self.assertContains(response, 'ingredients')
+        self.assertContains(response, 'cooking_time_max')
+        self.assertContains(response, 'difficulty')
+        self.assertContains(response, 'chart_type')
+
+    def test_search_template_help_text(self):
+        """Test search template displays help text"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('recipes:recipe-search'))
+        
+        self.assertContains(response, 'wildcard')
+        self.assertContains(response, 'Search Tips')
+
+    def test_search_template_results_display(self):
+        """Test search template displays results when available"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'show_all',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Search Results')
+        self.assertContains(response, 'Data Visualization')
+
+    def test_search_template_no_results_message(self):
+        """Test search template displays no results message"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('recipes:recipe-search'), {
+            'search_action': 'search',
+            'recipe_name': 'nonexistent',
+            'chart_type': '#1'
+        })
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'No Recipes Found')
