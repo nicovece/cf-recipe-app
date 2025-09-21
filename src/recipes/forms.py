@@ -1,12 +1,5 @@
 from django import forms
 
-# Chart type choices - same as in your bookstore project
-CHART_CHOICES = (
-    ('#1', 'Bar chart'),
-    ('#2', 'Pie chart'),
-    ('#3', 'Line chart')
-)
-
 # Difficulty choices based on your Recipe model
 DIFFICULTY_CHOICES = (
     ('', 'All Difficulties'),
@@ -42,11 +35,4 @@ class RecipeSearchForm(forms.Form):
     difficulty = forms.ChoiceField(
         choices=DIFFICULTY_CHOICES,
         required=False
-    )
-    
-    # Chart type selection - same as bookstore
-    chart_type = forms.ChoiceField(
-        choices=CHART_CHOICES,
-        required=True,
-        initial='#1'
     )

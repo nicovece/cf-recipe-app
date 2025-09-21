@@ -82,14 +82,6 @@
                     </label>
                     {{ form.difficulty }}
                 </div>
-
-                <div>
-                    <label for="{{ form.chart_type.id_for_label }}"
-                        class="block mb-1 text-sm font-medium text-gray-700">
-                        Chart Type
-                    </label>
-                    {{ form.chart_type }}
-                </div>
             </div>
 
             <div class="flex gap-4 mt-6">
@@ -124,13 +116,36 @@
     </div>
     {% endif %}
 
-    <!-- Chart Display -->
-    {% if chart %}
+    <!-- Charts Display -->
+    {% if charts %}
     <div class="mb-8">
-        <h2 class="mb-4 text-xl font-semibold text-accent-600">Data Visualization</h2>
-        <div class="p-6 text-center bg-white rounded-lg shadow-lg">
-            <img src="data:image/png;base64, {{ chart|safe }}" alt="Recipe Analysis Chart"
-                class="mx-auto max-w-full h-auto">
+        <h2 class="mb-6 text-xl font-semibold text-accent-600">Data Visualizations</h2>
+
+        <!-- Bar Chart -->
+        <div class="mb-8">
+            <h3 class="mb-4 text-lg font-medium text-gray-800">Recipe Cooking Times</h3>
+            <div class="p-6 text-center bg-white rounded-lg shadow-lg">
+                <img src="data:image/png;base64, {{ charts.bar|safe }}" alt="Recipe Cooking Times Bar Chart"
+                    class="mx-auto max-w-full h-auto">
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="mb-8">
+            <h3 class="mb-4 text-lg font-medium text-gray-800">Difficulty Level Distribution</h3>
+            <div class="p-6 text-center bg-white rounded-lg shadow-lg">
+                <img src="data:image/png;base64, {{ charts.pie|safe }}" alt="Recipe Difficulty Distribution Pie Chart"
+                    class="mx-auto max-w-full h-auto">
+            </div>
+        </div>
+
+        <!-- Line Chart -->
+        <div class="mb-8">
+            <h3 class="mb-4 text-lg font-medium text-gray-800">Cooking Time vs Number of Ingredients</h3>
+            <div class="p-6 text-center bg-white rounded-lg shadow-lg">
+                <img src="data:image/png;base64, {{ charts.line|safe }}" alt="Cooking Time vs Ingredients Line Chart"
+                    class="mx-auto max-w-full h-auto">
+            </div>
         </div>
     </div>
     {% endif %}

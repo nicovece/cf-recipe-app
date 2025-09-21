@@ -23,7 +23,7 @@ def get_graph():
 
 def get_chart(chart_type, data, **kwargs):
     """
-    Generate charts based on recipe data
+    Generate a single chart based on recipe data
     
     Args:
         chart_type: Type of chart ('#1'=bar, '#2'=pie, '#3'=line)
@@ -66,3 +66,27 @@ def get_chart(chart_type, data, **kwargs):
     # render the graph to file
     chart = get_graph()
     return chart
+
+def get_all_charts(data, **kwargs):
+    """
+    Generate all three chart types based on recipe data
+    
+    Args:
+        data: pandas DataFrame with recipe data
+        **kwargs: Additional parameters like labels
+    
+    Returns:
+        dict: Dictionary containing all three charts with their types as keys
+    """
+    charts = {}
+    
+    # Generate bar chart
+    charts['bar'] = get_chart("#1", data, **kwargs)
+    
+    # Generate pie chart
+    charts['pie'] = get_chart("#2", data, **kwargs)
+    
+    # Generate line chart
+    charts['line'] = get_chart("#3", data, **kwargs)
+    
+    return charts
