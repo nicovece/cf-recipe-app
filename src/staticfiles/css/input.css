@@ -65,13 +65,4 @@
   select {
     @apply form-field;
   }
-
-  /* Force include hover text classes */
-  .hover\:text-accent-600:hover {
-    color: #e36f10;
-  }
-
-  .hover\:border-accent-600:hover {
-    border-color: #e36f10;
-  }
 }

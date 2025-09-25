@@ -2,6 +2,20 @@
 
 A simple Django web application for managing and storing recipes. This app allows you to create, store, and organize recipes with automatic difficulty calculation based on cooking time and ingredients.
 
+## 🎨 Tailwind CSS Integration
+
+This project uses Tailwind CSS for styling with a custom build workflow. See [TAILWIND_WORKFLOW.md](./TAILWIND_WORKFLOW.md) for detailed instructions on working with styles.
+
+**Quick Start for Styling:**
+
+```bash
+# Development mode (auto-sync with Django)
+pnpm run dev-django
+
+# Production build
+pnpm run build-django
+```
+
 ## Features
 
 - **Recipe Management**: Create and store recipes with names, ingredients, and cooking times
