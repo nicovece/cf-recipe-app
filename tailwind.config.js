@@ -1,70 +1,30 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    // HTML templates
-    "./src/**/*.html",
+    // Django templates
     "./src/templates/**/*.html",
     "./src/recipes/templates/**/*.html",
-    
-    // Python files (Django views, models, etc.)
+
+    // Python files that might contain Tailwind classes
     "./src/recipe_project/**/*.py",
     "./src/recipes/**/*.py",
-    
-    // Template tag files specifically
-    "./src/recipes/templatetags/**/*.py",
-    
+
     // JavaScript files (if any)
     "./src/static/**/*.js",
-    
+
     // Include all files that might contain Tailwind classes
     "./src/**/*.{html,py,js,ts,jsx,tsx}",
   ],
   safelist: [
-    // Hover states
-    'hover:text-orange-600',
-    'hover:border-orange-600',
-    'hover:text-accent-600',
-    'hover:border-accent-600',
-    'hover:text-white',
-    'hover:bg-accent-400',
-    'hover:border-accent-400',
-    'hover:rounded-md',
-    'hover:text-accent-800',
-    'hover:scale-105',
-    'hover:shadow-xl',
-    'hover:underline',
-    
-    // Navigation classes (from template tags)
-    'bg-alternate_a-800/70',
-    'backdrop-blur-sm',
-    'bg-alternate_a-100',
-    'text-accent-300',
-    'text-accent-600',
-    'border-accent-300',
-    'border-l',
-    'border-alternate_a-700',
-    'border-alternate_a-300',
-    'text-accent-800',
-    
-    // Footer classes (from template tags)
-    'fixed',
-    'right-0',
-    'z-50',
-    'bottom-0',
-    'left-0',
-    'text-accent-300',
-    'border-t',
-    'border-gray-200',
-    'text-accent-800',
-    
-    // Custom utility classes
-    '!border-2',
-    '!border-accent-600',
-    'border-2',
-    'border-4',
-    'border',
-    
-    // Form and component classes
+    // Classes that might be generated dynamically and not detected
+    // by Tailwind's content scanning
+    {
+      pattern: /text-(gray|accent|alternate_a)-(100|200|300|400|500|600|700|800|900)/,
+    },
+    {
+      pattern: /columns-(1|2|3|4|5|6|7|8|9|10|11|12|auto)/,
+    },
+    // Django form classes that might be added dynamically
     'form-field',
     'form-label',
     'errorlist',
@@ -76,6 +36,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Custom color palette from your existing design
         ground_a: {
           50: '#fdfbf7',
           100: '#F7F0DE',
@@ -116,6 +77,12 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
+  corePlugins: {
+    // Enable all core plugins for maximum flexibility
+    scale: true,
+    transform: true,
+  },
 }
-
