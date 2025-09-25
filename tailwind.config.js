@@ -7,6 +7,12 @@ module.exports = {
     "./src/recipe_project/**/*.py",
     "./src/recipes/**/*.py",
   ],
+  safelist: [
+    'hover:text-orange-600',
+    'hover:border-orange-600',
+    'hover:text-accent-600',
+    'hover:border-accent-600',
+  ],
   theme: {
     extend: {
       colors: {
