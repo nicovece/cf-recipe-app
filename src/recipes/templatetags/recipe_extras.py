@@ -29,3 +29,13 @@ def get_footer_classes(context):
     if is_hero_page(context):
         return "fixed right-0 z-50 bottom-0 left-0 bg-alternate_a-800/70 backdrop-blur-sm text-accent-300"
     return "bg-alternate_a-100 border-t border-gray-200 text-accent-800"
+
+@register.simple_tag
+def search_tip_classes():
+    return 'max-w-max border-b border-dashed border-[currentColor]/75 pb-3'
+
+
+@register.filter
+def split(value, delimiter=','):
+    """Split a string by delimiter and return a list"""
+    return [item.strip() for item in value.split(delimiter) if item.strip()]

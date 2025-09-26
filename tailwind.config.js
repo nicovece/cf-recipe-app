@@ -24,6 +24,19 @@ module.exports = {
     {
       pattern: /columns-(1|2|3|4|5|6|7|8|9|10|11|12|auto)/,
     },
+    {
+      pattern: /grid-cols-(1|2|3|4|5|6|7|8|9|10|11|12)/,
+    },
+    // Specific responsive grid classes
+    // 'lg:grid-cols-1',
+    // 'lg:grid-cols-2',
+    // 'lg:grid-cols-3',
+    // 'lg:grid-cols-4',
+    // 'md:grid-cols-1',
+    // 'md:grid-cols-2',
+    // 'md:grid-cols-3',
+    // 'sm:grid-cols-1',
+    // 'sm:grid-cols-2',
     // Django form classes that might be added dynamically
     'form-field',
     'form-label',

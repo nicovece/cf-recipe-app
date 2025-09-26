@@ -9,19 +9,28 @@ DIFFICULTY_CHOICES = (
     ('Hard', 'Hard')
 )
 
+# Common CSS classes for form inputs
+INPUT_CLASSES = 'w-full px-3 py-2 border border-accent-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-100 focus:border-accent-300 transition-colors duration-200 text-accent-600'
+
 class RecipeSearchForm(forms.Form):
     # Search criteria fields
     recipe_name = forms.CharField(
         max_length=120,
         required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter recipe name (supports * and ? wildcards)'}),
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter recipe name (supports * and ? wildcards)',
+            'class': INPUT_CLASSES
+        }),
         help_text="Use * for any characters, ? for single character. Example: 'pasta*' or 'pasta?'"
     )
     
     ingredients = forms.CharField(
         max_length=200,
         required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter ingredients (comma separated, supports wildcards)'}),
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter ingredients (comma separated, supports wildcards)',
+            'class': INPUT_CLASSES
+        }),
         help_text="Use * for any characters, ? for single character. Example: 'tomato*, cheese'"
     )
     
@@ -29,10 +38,14 @@ class RecipeSearchForm(forms.Form):
         required=False,
         min_value=1,
         max_value=1440,
-        widget=forms.NumberInput(attrs={'placeholder': 'Max cooking time (minutes)'})
+        widget=forms.NumberInput(attrs={
+            'placeholder': 'Max cooking time (minutes)',
+            'class': INPUT_CLASSES
+        })
     )
     
     difficulty = forms.ChoiceField(
         choices=DIFFICULTY_CHOICES,
-        required=False
+        required=False,
+        widget=forms.Select(attrs={'class': INPUT_CLASSES})
     )

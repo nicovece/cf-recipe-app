@@ -55,7 +55,7 @@ class RecipeDetailView(LoginRequiredMixin, DetailView):
 @login_required
 def recipe_search(request):
     form = RecipeSearchForm(request.POST or None)
-    recipes_df = None  # Initialize recipes_df
+    recipes = None  # Initialize recipes
     charts = None
 
     if request.method == "POST":
@@ -98,26 +98,39 @@ def recipe_search(request):
         
         # If search_action == "show_all", no filters are applied (qs remains Recipe.objects.all())
 
-        # Convert QuerySet to DataFrame if we have results
+        # Convert QuerySet to list of dictionaries if we have results
         if qs.exists():
-            recipes_df = pd.DataFrame(qs.values())
+            recipes_data = []
+            for recipe in qs:
+                # Calculate ingredient count
+                ingredient_count = len([ing.strip() for ing in recipe.ingredients.split(",") if ing.strip()]) if recipe.ingredients else 0
+                
+                recipes_data.append({
+                    'id': recipe.id,
+                    'name': recipe.name,  # Clean name without HTML
+                    'cooking_time': recipe.cooking_time,
+                    'difficulty': recipe.difficulty,
+                    'ingredients': recipe.ingredients,
+                    'ingredient_count': ingredient_count,
+                    'short_description': recipe.short_description,
+                    'recipe_image_url': recipe.recipe_image.url,
+                    'detail_url': f"/recipes/{recipe.id}/"
+                })
             
-            # Add calculated columns
-            recipes_df["ingredient_count"] = recipes_df["ingredients"].apply(
-                lambda x: len([ing.strip() for ing in x.split(",") if ing.strip()]) if x else 0
-            )
-            
-            # Make recipe names clickable links to detail pages
-            recipes_df["name"] = recipes_df.apply(
-                lambda row: f'<a href="/recipes/{row["id"]}/" class="font-semibold text-accent-600 hover:text-accent-800 hover:underline">{row["name"]}</a>',
-                axis=1
-            )
+            # Create DataFrame for charts (we still need this for chart generation)
+            recipes_df = pd.DataFrame([{
+                'id': recipe.id,
+                'name': recipe.name,
+                'cooking_time': recipe.cooking_time,
+                'difficulty': recipe.difficulty,
+                'ingredients': recipe.ingredients,
+                'ingredient_count': len([ing.strip() for ing in recipe.ingredients.split(",") if ing.strip()]) if recipe.ingredients else 0,
+            } for recipe in qs])
             
             # Generate all charts
             charts = get_all_charts(recipes_df, labels=recipes_df["name"].values)
             
-            # Convert DataFrame to HTML for display with custom CSS class
-            recipes_df = recipes_df.to_html(escape=False, classes='search-results-table', table_id='search-results')
+            recipes = recipes_data
 
-    context = {"form": form, "recipes_df": recipes_df, "charts": charts}
+    context = {"form": form, "recipes": recipes, "charts": charts}
     return render(request, "recipes/search.html", context)

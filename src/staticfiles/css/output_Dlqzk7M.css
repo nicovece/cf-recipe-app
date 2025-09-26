@@ -785,11 +785,6 @@ video {
   margin-bottom: 3.5rem;
 }
 
-.my-24 {
-  margin-top: 6rem;
-  margin-bottom: 6rem;
-}
-
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -1501,10 +1496,6 @@ video {
 
 .pl-6 {
   padding-left: 1.5rem;
-}
-
-.pt-8 {
-  padding-top: 2rem;
 }
 
 .text-center {
@@ -3541,11 +3532,6 @@ video {
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(133 77 14 / var(--tw-text-opacity, 1));
-}
-
-.text-ground_a-600 {
-  --tw-text-opacity: 1;
-  color: rgb(201 154 58 / var(--tw-text-opacity, 1));
 }
 
 .opacity-90 {

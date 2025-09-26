@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load recipe_extras %}
 
 {% block title %}Recipe Search - Recipe App{% endblock %}
 
@@ -35,16 +36,16 @@
 
 {% block content %}
 <div class="container px-6 pt-20 pb-20 mx-auto mb-12">
-    <h1 class="mt-12 mb-8 font-serif text-3xl font-bold text-accent-600 text-primary-400">
+    <h1 class="mt-12 mb-8 font-serif text-2xl font-bold text-accent-600 text-primary-400">
         Search Recipes & Analyze Data
     </h1>
-    <div class="flex gap-8 columns-12">
+    <div class="grid grid-cols-1 lg:grid-cols-[80%_20%]">
         <!-- Search Form -->
-        <div class="p-6 mb-8 bg-blue-100 rounded-lg shadow-lg flex-[8]">
+        <div class="p-6 mb-8 rounded-lg shadow-lg bg-alternate_a-100/50">
             <h2 class="mb-4 text-xl font-semibold text-accent-600">Search Criteria</h2>
             <form action="" method="POST">
                 {% csrf_token %}
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid grid-cols-1 gap-10 md:grid-cols-2">
                     <div>
                         <label for="{{ form.recipe_name.id_for_label }}"
                             class="block mb-1 text-sm font-medium text-gray-700">
@@ -84,57 +85,122 @@
                     </div>
                 </div>
 
-                <div class="flex gap-4 mt-6">
+                <div class="flex flex-col gap-4 mt-12 md:flex-row">
                     <button type="submit" name="search_action" value="search"
-                        class="px-6 py-3 font-bold text-white rounded-lg transition-all duration-300 bg-accent-600 hover:bg-accent-700">
+                        class="px-6 py-3 font-bold text-white rounded-lg transition-all duration-300 bg-accent-400 hover:bg-accent-600 hover:scale-105">
                         Search & Analyze
                     </button>
                     <button type="submit" name="search_action" value="show_all"
-                        class="px-6 py-3 font-bold bg-white rounded-lg border border-solid transition-all duration-300 !border-accent-600 text-accent-600 hover:bg-accent-600 hover:text-white hover:border-accent-600">
+                        class="px-6 py-3 font-bold bg-transparent rounded-lg border border-solid transition-all duration-300 !border-accent-600 text-accent-600 hover:bg-accent-400 hover:text-white hover:border-accent-600">
                         Analyze All Recipes!</button>
+                    <a href="{% url 'recipes:recipe-list' %}"
+                        class="px-6 py-3 font-bold text-center bg-transparent rounded-lg border border-solid transition-all duration-300 border-alternate_a-100 text-accent-600 hover:bg-accent-400 hover:text-white hover:border-accent-600"><span
+                            class="px-2 py-1 border-b border-accent-400">Browse all recipes</span></a>
                 </div>
 
-                <div class="mt-4 text-sm text-gray-600">
+                <div class="my-8 text-sm text-gray-600">
                     <p>• <strong>Search & Analyze:</strong> Use the form fields above to filter recipes</p>
                     <p>• <strong>Analyze All Recipes:</strong> Generate analysis for all recipes in the database</p>
-                    <p>• <a href="{% url 'recipes:recipe-list' %}" class="text-accent-600 hover:underline">Browse all
-                            recipes in list format</a></p>
                 </div>
             </form>
         </div>
         <!-- Instructions -->
-        <div class="text-xs flex-[4]">
+        <div class="text-xs lg:pl-6">
             <h3 class="mb-2 text-base font-semibold text-gray-500">Search Tips</h3>
-            <ul class="space-y-2 list-disc text-gray-500">
-                <li>• <strong>Partial matching:</strong> "pasta" will find "Pasta al Pesto"</li>
-                <li>• <strong>Wildcard *:</strong> "pasta*" finds "pasta", "pastas", "pasta-based"</li>
-                <li>• <strong>Wildcard ?:</strong> "pasta?" finds "pasta" but not "pastas"</li>
-                <li>• <strong>Multiple ingredients:</strong> Enter "tomato*, cheese" to find recipes with both</li>
-                <li>• <strong>Time filtering:</strong> Enter 10 to find recipes taking 10 minutes or less</li>
-                <li>• <strong>Show all:</strong> Leave fields empty to see all recipes</li>
+            <ul class="grid grid-cols-1 gap-y-0 gap-2 space-y-3 list-none text-gray-500 sm:grid-cols-3 lg:grid-cols-1">
+                <li class="{% search_tip_classes %}"><strong>Partial matching:</strong><br>
+                    "pasta" will find
+                    "Pasta al Pesto"</li>
+                <li class="{% search_tip_classes %}"><strong>Wildcard *:</strong><br> "pasta*"
+                    finds "pasta", "pastas", "pasta-based"</li>
+                <li class="{% search_tip_classes %}"><strong>Wildcard ?:</strong><br> "pasta?"
+                    finds "pasta" but not "pastas"</li>
+                <li class="{% search_tip_classes %}"><strong>Multiple ingredients:</strong><br>
+                    Enter "tomato*, cheese" to find recipes with both</li>
+                <li class="{% search_tip_classes %}"><strong>Time filtering:</strong><br> Enter 10
+                    to find recipes taking 10 minutes or less</li>
+                <li class="{% search_tip_classes %}"><strong>Show all:</strong><br> Leave fields
+                    empty to see all recipes</li>
             </ul>
         </div>
     </div>
     <!-- Search Results -->
-    {% if recipes_df %}
-    <div class="mb-8">
+    {% if recipes %}
+    <div class="my-12">
         <h2 class="mb-4 text-xl font-semibold text-accent-600">Search Results</h2>
-        <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-            <div class="p-4">
-                {{ recipes_df|safe }}
+        <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-1">
+            {% for recipe in recipes %}
+            <div
+                class="flex overflow-hidden flex-col p-0 w-full max-w-sm bg-white rounded-lg shadow-lg transition-all ease-out lg:grid lg:grid-cols-[30%_30%_20%_20%] lg:max-w-full recipe-card hover:scale-105 hover:shadow-xl border border-alternate_a-100">
+                <!-- First Row: Image and Main Content -->
+                <div class="w-full-">
+                    <a href="{{ recipe.detail_url }}" class=""><img src="{{ recipe.recipe_image_url }}"
+                            alt="Summer salad" class="object-cover w-full h-full aspect-[6/3]">
+                    </a>
+                </div>
+                <div class="flex flex-col p-6">
+                    <h2 class="mb-1 font-serif text-2xl font-bold text-accent-600 text-primary-400"><a
+                            href="{{ recipe.detail_url }}"
+                            class="block mb-1 font-semibold text-accent-600 hover:text-accent-800">
+                            {{ recipe.name }}
+                        </a>
+                    </h2>
+                    <p class="text-sm text-gray-600">
+                        {{ recipe.short_description }}
+                    </p>
+                    <!-- <p class="text-sm text-gray-600">Hard</p>
+                    <p class="text-sm text-gray-600">15 minutes</p> -->
+                    <a href="{{ recipe.detail_url }}"
+                        class="px-4 py-2 mt-4 w-max text-sm font-bold rounded-md transition-all duration-300 text-accent-600 bg-alternate_a-100 hover:text-white hover:bg-accent-400">View
+                        Recipe</a>
+                </div>
+                <div class="px-4 py-3 mx-3 my-6 rounded-lg border border-dashed border-alternate_a-200">
+                    <h2 class="mb-4 text-base text-accent-600">Ingredients: <span class="ml-1 font-bold">
+                            {{ recipe.ingredient_count }}
+                        </span></h2>
+                    <ul class="space-y-2">
+                        {% for ingredient in recipe.ingredients|split:',' %}
+                        <li class="flex items-center text-sm text-gray-700">
+                            <svg class="mr-3 w-4 h-4 text-alternate_a-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            {{ ingredient }}
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+                <div
+                    class="flex flex-col px-2 py-3 mx-3 my-6 mr-6 rounded-lg border border-dashed border-alternate_a-200">
+                    <div class="flex gap-2 items-center p-2">
+                        <div class="w-3 h-3 rounded-full bg-alternate_a-300"></div>
+                        <div class="text-sm text-gray-600">Total time: <strong class="text-accent-600">
+                                15 minutes</strong>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 items-center p-2">
+                        <div class="w-3 h-3 rounded-full bg-alternate_a-300"></div>
+                        <div class="text-sm text-gray-600">Difficulty: <strong class="text-accent-600">
+                                Hard</strong>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
     {% endif %}
 
     <!-- Charts Display -->
     {% if charts %}
-    <div class="mb-8">
+    <div class="my-24">
         <h2 class="mb-6 text-xl font-semibold text-accent-600">Data Visualizations</h2>
 
         <!-- Bar Chart -->
-        <div class="mb-8">
-            <h3 class="mb-4 text-lg font-medium text-gray-800">Recipe Cooking Times</h3>
+        <div class="pt-8 my-8 border-t border-dashed border-alternate_a-200">
+            <h3 class="mb-4 text-lg font-medium text-accent-800">Recipe Cooking Times</h3>
             <div class="p-6 text-center bg-white rounded-lg shadow-lg">
                 <img src="data:image/png;base64, {{ charts.bar|safe }}" alt="Recipe Cooking Times Bar Chart"
                     class="mx-auto max-w-full h-auto">
@@ -143,7 +209,7 @@
 
         <!-- Pie Chart -->
         <div class="mb-8">
-            <h3 class="mb-4 text-lg font-medium text-gray-800">Difficulty Level Distribution</h3>
+            <h3 class="mb-4 text-lg font-medium text-accent-800">Difficulty Level Distribution</h3>
             <div class="p-6 text-center bg-white rounded-lg shadow-lg">
                 <img src="data:image/png;base64, {{ charts.pie|safe }}" alt="Recipe Difficulty Distribution Pie Chart"
                     class="mx-auto max-w-full h-auto">
@@ -152,7 +218,7 @@
 
         <!-- Line Chart -->
         <div class="mb-8">
-            <h3 class="mb-4 text-lg font-medium text-gray-800">Cooking Time vs Number of Ingredients</h3>
+            <h3 class="mb-4 text-lg font-medium text-accent-800">Cooking Time vs Number of Ingredients</h3>
             <div class="p-6 text-center bg-white rounded-lg shadow-lg">
                 <img src="data:image/png;base64, {{ charts.line|safe }}" alt="Cooking Time vs Ingredients Line Chart"
                     class="mx-auto max-w-full h-auto">
@@ -162,7 +228,7 @@
     {% endif %}
 
     <!-- No Results Message -->
-    {% if not recipes_df and request.method == "POST" %}
+    {% if not recipes and request.method == "POST" %}
     <div class="p-6 mb-8 bg-yellow-50 rounded-lg border border-yellow-200">
         <h3 class="mb-2 text-lg font-semibold text-yellow-800">No Recipes Found</h3>
         <p class="text-yellow-700">Try adjusting your search criteria or <a href="{% url 'recipes:recipe-list' %}"
