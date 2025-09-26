@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from .models import Recipe
 from .forms import RecipeSearchForm
-from .utils import get_all_charts
+from .utils import get_all_charts, get_chart_with_colors
 import pandas as pd
 import re
 
@@ -127,8 +127,12 @@ def recipe_search(request):
                 'ingredient_count': len([ing.strip() for ing in recipe.ingredients.split(",") if ing.strip()]) if recipe.ingredients else 0,
             } for recipe in qs])
             
-            # Generate all charts
-            charts = get_all_charts(recipes_df, labels=recipes_df["name"].values)
+            # Generate charts with different color schemes
+            charts = {
+                'bar': get_chart_with_colors('#1', recipes_df, color_scheme='brand'),
+                'pie': get_chart_with_colors('#2', recipes_df, color_scheme='brand'),
+                'line': get_chart_with_colors('#3', recipes_df, color_scheme='brand')
+            }
             
             recipes = recipes_data
 
