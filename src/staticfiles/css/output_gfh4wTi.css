@@ -750,6 +750,22 @@ video {
   z-index: 50;
 }
 
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
+.row-start-2 {
+  grid-row-start: 2;
+}
+
+.row-start-1 {
+  grid-row-start: 1;
+}
+
+.row-start-3 {
+  grid-row-start: 3;
+}
+
 .mx-3 {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
@@ -763,11 +779,6 @@ video {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
-}
-
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .my-24 {
@@ -841,10 +852,6 @@ video {
   margin-top: 3rem;
 }
 
-.mt-2 {
-  margin-top: 0.5rem;
-}
-
 .mt-4 {
   margin-top: 1rem;
 }
@@ -903,6 +910,10 @@ video {
 
 .h-12 {
   height: 3rem;
+}
+
+.h-16 {
+  height: 4rem;
 }
 
 .h-3 {
@@ -1276,6 +1287,11 @@ video {
   border-color: rgb(248 178 122 / var(--tw-border-opacity, 1));
 }
 
+.border-accent-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(244 127 33 / var(--tw-border-opacity, 1));
+}
+
 .border-alternate_a-100 {
   --tw-border-opacity: 1;
   border-color: rgb(226 243 238 / var(--tw-border-opacity, 1));
@@ -1309,6 +1325,11 @@ video {
 .border-yellow-200 {
   --tw-border-opacity: 1;
   border-color: rgb(254 240 138 / var(--tw-border-opacity, 1));
+}
+
+.border-alternate_a-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(85 183 153 / var(--tw-border-opacity, 1));
 }
 
 .bg-accent-400 {
@@ -1389,10 +1410,6 @@ video {
   padding: 0.5rem;
 }
 
-.p-4 {
-  padding: 1rem;
-}
-
 .p-6 {
   padding: 1.5rem;
 }
@@ -1460,20 +1477,12 @@ video {
   padding-bottom: 2.5rem;
 }
 
-.pb-12 {
-  padding-bottom: 3rem;
-}
-
 .pb-20 {
   padding-bottom: 5rem;
 }
 
 .pb-3 {
   padding-bottom: 0.75rem;
-}
-
-.pb-4 {
-  padding-bottom: 1rem;
 }
 
 .pl-3 {
@@ -3724,28 +3733,8 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
-  .md\:row-start-1 {
-    grid-row-start: 1;
-  }
-
-  .md\:row-start-2 {
-    grid-row-start: 2;
-  }
-
-  .md\:row-start-3 {
-    grid-row-start: 3;
-  }
-
   .md\:mt-6 {
     margin-top: 1.5rem;
-  }
-
-  .md\:block {
-    display: block;
   }
 
   .md\:grid {
@@ -3754,14 +3743,6 @@ video {
 
   .md\:aspect-4\/3 {
     aspect-ratio: 4 / 3;
-  }
-
-  .md\:h-16 {
-    height: 4rem;
-  }
-
-  .md\:w-auto {
-    width: auto;
   }
 
   .md\:grid-cols-2 {
@@ -3776,16 +3757,12 @@ video {
     grid-template-columns: 50% 40%;
   }
 
-  .md\:flex-row {
-    flex-direction: row;
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .md\:p-8 {
     padding: 2rem;
-  }
-
-  .md\:pb-0 {
-    padding-bottom: 0px;
   }
 
   .md\:text-2xl {

@@ -13,13 +13,13 @@
 <body class="relative min-h-screen bg-white">
     <!-- Navigation -->
     <nav
-        class="fixed top-0 right-0 left-0 z-50 {% get_nav_classes 'bg-alternate_a-800/70 backdrop-blur-sm' 'bg-alternate_a-100' %}">
+        class="fixed top-0 right-0 left-0 z-50 {% get_nav_classes 'bg-alternate_a-800/70 backdrop-blur-sm' 'bg-alternate_a-100' %} shadow-lg">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{% url 'recipes:home' %}" class="text-xl font-semibold text-accent-600">Recipe App</a>
+            <div class="flex flex-col justify-between md:flex-row md:h-16">
+                <div class="flex justify-center items-center w-full md:w-auto">
+                    <a href="{% url 'recipes:home' %}" class="p-2 text-xl font-semibold text-accent-600">Recipe App</a>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex justify-center items-center pb-4 space-x-4 md:pb-0">
                     {% block navigation %}
                     <a href="{% url 'recipes:home' %}"
                         class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">Home</a>
@@ -30,7 +30,7 @@
 
                     {% if user.is_authenticated %}
                     <span
-                        class="ml-12 py-1 pl-3 text-sm font-medium {% get_nav_classes 'text-accent-300 border-l border-alternate_a-700' 'text-accent-800 border-l border-alternate_a-300' %} ">Hi,
+                        class="ml-12 py-1 pl-3 text-sm font-medium {% get_nav_classes 'text-accent-300 border-l border-alternate_a-700' 'text-accent-800 border-l border-alternate_a-300' %} hidden md:block">Hi,
                         {{ user.username }}!</span> <a href="{%url 'logout' %}"
                         class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">
                         Logout </a>

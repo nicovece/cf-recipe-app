@@ -3776,10 +3776,6 @@ video {
     grid-template-columns: 50% 40%;
   }
 
-  .md\:flex-row {
-    flex-direction: row;
-  }
-
   .md\:p-8 {
     padding: 2rem;
   }

@@ -1,8 +1,9 @@
 from django.views.generic import TemplateView, ListView, DetailView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.urls import reverse
 from .models import Recipe
 from .forms import RecipeSearchForm
 from .utils import get_all_charts, get_chart_with_colors
@@ -135,6 +136,39 @@ def recipe_search(request):
             }
             
             recipes = recipes_data
+            
+            # Store search results in session for redirect
+            request.session['search_recipes'] = recipes
+            request.session['search_charts'] = charts
+            request.session['search_form_data'] = {
+                'recipe_name': recipe_name,
+                'ingredients': ingredients,
+                'cooking_time_max': cooking_time_max,
+                'difficulty': difficulty
+            }
+            
+            # Redirect to search results section
+            return redirect(reverse('recipes:recipe-search') + '#search-results')
+        else:
+            # Store form data in session for redirect
+            request.session['search_form_data'] = {
+                'recipe_name': recipe_name,
+                'ingredients': ingredients,
+                'cooking_time_max': cooking_time_max,
+                'difficulty': difficulty
+            }
+            
+            # No results found, redirect to no-results section
+            return redirect(reverse('recipes:recipe-search') + '#no-recipes-found')
+    
+    # Check if we have stored search results from a redirect
+    if 'search_recipes' in request.session:
+        recipes = request.session.pop('search_recipes')
+        charts = request.session.pop('search_charts')
+        form_data = request.session.pop('search_form_data', {})
+        
+        # Pre-populate form with search data
+        form = RecipeSearchForm(initial=form_data)
 
     context = {"form": form, "recipes": recipes, "charts": charts}
     return render(request, "recipes/search.html", context)
