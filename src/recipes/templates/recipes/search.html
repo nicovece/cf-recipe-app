@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load recipe_extras %}
 
+
 {% block title %}Recipe Search - Recipe App{% endblock %}
 
 {% block extra_css %}
@@ -51,7 +52,7 @@
                             class="block mb-1 text-sm font-medium text-gray-700">
                             Recipe Name
                         </label>
-                        {{ form.recipe_name }}
+                        {{ form.recipe_name|tailwind_input }}
                         {% if form.recipe_name.help_text %}
                         <p class="mt-1 text-xs text-gray-500">{{ form.recipe_name.help_text }}</p>
                         {% endif %}
@@ -62,7 +63,7 @@
                             class="block mb-1 text-sm font-medium text-gray-700">
                             Ingredients
                         </label>
-                        {{ form.ingredients }}
+                        {{ form.ingredients|tailwind_input }}
                         {% if form.ingredients.help_text %}
                         <p class="mt-1 text-xs text-gray-500">{{ form.ingredients.help_text }}</p>
                         {% endif %}
@@ -73,7 +74,7 @@
                             class="block mb-1 text-sm font-medium text-gray-700">
                             Max Cooking Time (minutes)
                         </label>
-                        {{ form.cooking_time_max }}
+                        {{ form.cooking_time_max|tailwind_input }}
                     </div>
 
                     <div>
@@ -81,7 +82,7 @@
                             class="block mb-1 text-sm font-medium text-gray-700">
                             Difficulty Level
                         </label>
-                        {{ form.difficulty }}
+                        {{ form.difficulty|tailwind_input }}
                     </div>
                 </div>
 

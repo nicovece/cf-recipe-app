@@ -1,5 +1,7 @@
 from django import template
 
+from widget_tweaks.templatetags.widget_tweaks import add_class
+
 register = template.Library()
 
 @register.simple_tag(takes_context=True)
@@ -39,3 +41,21 @@ def search_tip_classes():
 def split(value, delimiter=','):
     """Split a string by delimiter and return a list"""
     return [item.strip() for item in value.split(delimiter) if item.strip()]
+
+@register.filter
+def tailwind_input(field):
+    """
+    Apply Tailwind CSS classes to form fields.
+    Works with TextInput, NumberInput, Select, and other widget types.
+    """
+    classes = "w-full px-3 py-2 border border-accent-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-100 focus:border-accent-300 transition-colors duration-200 text-accent-600"
+    return add_class(field, classes)
+
+@register.filter
+def tailwind_select(field):
+    """
+    Apply Tailwind CSS classes specifically for Select fields.
+    This ensures proper styling for dropdown menus.
+    """
+    classes = "w-full px-3 py-2 border border-accent-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-100 focus:border-accent-300 transition-colors duration-200 text-accent-600 bg-white"
+    return add_class(field, classes)

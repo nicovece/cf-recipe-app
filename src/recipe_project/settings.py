@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'django_browser_reload',
     'recipes',
+
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
