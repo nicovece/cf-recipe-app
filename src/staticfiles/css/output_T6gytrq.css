@@ -3883,10 +3883,6 @@ video {
     margin-bottom: 2rem;
   }
 
-  .lg\:mb-4 {
-    margin-bottom: 1rem;
-  }
-
   .lg\:grid {
     display: grid;
   }

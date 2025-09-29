@@ -29,7 +29,7 @@
             Explore Recipes
         </a> -->
         {% if user.is_authenticated %}
-        <div class="flex flex-col gap-4 justify-center sm:flex-row">
+        <div class="flex flex-col gap-8 justify-center p-4 sm:flex-row">
             <a href="{% url 'recipes:recipe-list' %}"
                 class="px-8 py-4 text-lg font-bold text-white rounded-lg shadow-lg transition-all duration-300 bg-accent-400 hover:scale-105 hover:bg-accent-600">
                 Explore Recipes

@@ -19,13 +19,13 @@
 
     <div
         class="relative z-10 p-8 mx-8 w-full max-w-lg text-center text-white bg-opacity-70 rounded-lg bg-alternate_a-800">
-        <h1 class="mb-6 font-serif text-3xl font-bold md:text-4xl lg:text-2xl">
+        <h1 class="mb-6 font-serif text-3xl font-bold md:text-4xl lg:text-2xl text-accent-400">
             Login to Recipe App
         </h1>
         {% if error_message %}
         <p class="mb-8 text-xl bg-red-500 opacity-90 md:text-2xl">{{error_message}}</p>
         {% endif %}
-        <form action="" method="POST" class="space-y-6 login-form">
+        <form action="" method="POST" class="space-y-6-- login-form">
             {% comment %} add Django security token {% endcomment %}
             {% csrf_token %}
 
@@ -40,7 +40,7 @@
             <div class="mb-6 space-y-6">
                 {% for field in form %}
                 <div class="space-y-1">
-                    <label for="{{ field.id_for_label }}" class="form-label">
+                    <label for="{{ field.id_for_label }}" class="text-accent-300 form-label">
                         {{ field.label }}
                     </label>
                     {{ field|tailwind_input }}
@@ -55,7 +55,7 @@
 
             {% comment %} add button {% endcomment %}
             <button type="submit"
-                class="inline-block px-8 py-4 text-lg font-bold text-white rounded-lg shadow-lg transition-all duration-300 bg-accent-400 hover:bg-accent-50 hover:scale-105 hover:bg-accent-600">Login</button>
+                class="px-8 py-4 mt-6 w-full text-lg font-bold text-white rounded-lg shadow-lg transition-all duration-300 inline-block- bg-accent-400 hover:bg-accent-50 hover:scale-105 hover:bg-accent-600 max-w-72">Login</button>
         </form>
     </div>
 </div>
