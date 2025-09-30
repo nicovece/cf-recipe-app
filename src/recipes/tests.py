@@ -487,7 +487,7 @@ class RecipeTemplateTest(TestCase):
         response = self.client.get(reverse('recipes:home'))
         
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Recipe App')  # Assuming this is in the template
+        self.assertContains(response, 'Nomalyze')  # Assuming this is in the template
 
     def test_recipe_list_template_content(self):
         """Test recipe list template renders expected content"""

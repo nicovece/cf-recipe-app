@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - Recipe App{% endblock %}
+{% block title %}Home - Nomalyze{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -16,9 +16,9 @@
     <div class="relative z-10 px-4 mx-auto max-w-4xl text-center text-white">
         <h1 class="mb-6 font-serif text-3xl font-bold md:text-6xl lg:text-5xl">
             {% if user.is_authenticated %}
-            Welcome back to Recipe App, {{ user.username }}!
+            Welcome back to Nomalyze, {{ user.username }}!
             {% else %}
-            Welcome to Recipe App
+            Welcome to Nomalyze
             {% endif %}
         </h1>
         <p class="mb-8 text-xl opacity-90 md:text-2xl">

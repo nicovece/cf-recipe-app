@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Recipe App{% endblock %}</title>
+    <title>{% block title %}Nomalyze{% endblock %}</title>
     <link href="{% static 'css/output.css' %}?v=20250103" rel="stylesheet">
     {% block extra_css %}{% endblock %}
 </head>
@@ -18,7 +18,7 @@
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex flex-col justify-between md:flex-row md:h-16">
                 <div class="flex justify-center items-center w-full md:w-auto">
-                    <a href="{% url 'recipes:home' %}" class="p-2 text-xl font-semibold text-accent-600">Recipe App</a>
+                    <a href="{% url 'recipes:home' %}" class="p-2 text-xl font-semibold text-accent-600">Nomalyze</a>
                 </div>
                 <div class="flex justify-center items-center pb-4 space-x-4 md:pb-0">
                     {% block navigation %}
@@ -57,7 +57,7 @@
         <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="text-sm text-center">
                 {% block footer %}
-                <p>&copy; 2025 Recipe App</p>
+                <p>&copy; 2025 Nomalyze</p>
                 {% endblock %}
             </div>
         </div>

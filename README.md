@@ -1,6 +1,10 @@
-# Recipe Management App
+# Nomalyze
 
-A simple Django web application for managing and storing recipes. This app allows you to create, store, and organize recipes with automatic difficulty calculation based on cooking time and ingredients.
+A smart Django web application for managing and analyzing recipes. Nomalyze allows you to create, store, and organize recipes with automatic difficulty calculation and advanced data analytics based on cooking time and ingredients.
+
+## About the Name
+
+**Nomalyze** combines "nom" (the sound of eating) with "analyze" - perfectly capturing our app's dual purpose of helping you discover delicious recipes while providing intelligent data insights about your cooking patterns and preferences.
 
 ## 🎨 Tailwind CSS Integration
 
@@ -18,7 +22,7 @@ pnpm run build-django
 
 ## Features
 
-- **Recipe Management**: Create and store recipes with names, ingredients, and cooking times
+- **Smart Recipe Management**: Create and store recipes with names, ingredients, and cooking times
 - **Automatic Difficulty Calculation**: The app automatically calculates recipe difficulty based on cooking time and number of ingredients
 - **Ingredient Lists**: Store ingredients as comma-separated values with automatic list conversion
 - **Cooking Time Validation**: Ensures cooking times are reasonable (1 minute to 24 hours)
@@ -46,7 +50,7 @@ The app automatically calculates difficulty based on:
 
    ```bash
    git clone <repository-url>
-   cd cf-recipe-app
+   cd nomalyze
    ```
 
 2. Install dependencies:
@@ -88,7 +92,7 @@ The app includes a convenient management script (`manage.sh`) that handles Djang
 ## Project Structure
 
 ```
-cf-recipe-app/
+nomalyze/
 ├── manage.sh              # Django management script
 ├── requirements.txt       # Python dependencies
 ├── README.md             # This file
@@ -103,7 +107,7 @@ cf-recipe-app/
 
 ## Contributing
 
-This is a simple recipe management app. Feel free to contribute by adding new features or improving existing functionality.
+This is Nomalyze - a smart recipe management and analytics app. Feel free to contribute by adding new features or improving existing functionality.
 
 ## License
 
