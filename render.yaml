@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: django-recipe-app
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      cd src
+      python manage.py collectstatic --noinput
+      python manage.py migrate
+    startCommand: |
+      cd src
+      gunicorn recipe_project.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: your-app-name.onrender.com
+      - key: SECURE_SSL_REDIRECT
+        value: True
+      - key: SECURE_HSTS_SECONDS
+        value: 31536000
+      - key: SECURE_HSTS_INCLUDE_SUBDOMAINS
+        value: True
+      - key: SECURE_HSTS_PRELOAD
+        value: True
+      - key: SECURE_CONTENT_TYPE_NOSNIFF
+        value: True
+      - key: SECURE_BROWSER_XSS_FILTER
+        value: True
+      - key: X_FRAME_OPTIONS
+        value: DENY
+      - key: SECURE_REFERRER_POLICY
+        value: strict-origin-when-cross-origin
