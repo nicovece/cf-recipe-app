@@ -5,8 +5,8 @@
     "fields": {
       "name": "Pizza Margherita",
       "short_description": "Classic Italian pizza with tomato, mozzarella, and basil.",
-      "ingredients": "Pizza dough, Tomato sauce, Mozzarella, Basil, Olive oil, Salt",
-      "cooking_time": 25,
+      "ingredients": "Pizza dough, Tomato sauce, Mozzarella",
+      "cooking_time": 8,
       "recipe_image": "recipes/louis-hansel-cC0_UO1Obg4-unsplash.jpg",
       "references": ""
     }
@@ -18,7 +18,7 @@
       "name": "Pasta Carbonara",
       "short_description": "Creamy Roman pasta with eggs, cheese, and pancetta.",
       "ingredients": "Spaghetti, Eggs, Pancetta, Parmesan, Pepper, Salt",
-      "cooking_time": 20,
+      "cooking_time": 9,
       "recipe_image": "recipes/studio-crevettes-VO5r54j8yc8-unsplash.jpg",
       "references": ""
     }
@@ -30,7 +30,7 @@
       "name": "Pasta Aglio, Olio, Peperoncino",
       "short_description": "Simple pasta with garlic, chili, and olive oil.",
       "ingredients": "Spaghetti, Garlic, Chili flakes, Olive oil, Parsley, Salt",
-      "cooking_time": 15,
+      "cooking_time": 8,
       "recipe_image": "recipes/homemade-spaghetti-aglio-e-olio-600nw-2558556449.jpg",
       "references": ""
     }
@@ -53,7 +53,7 @@
     "fields": {
       "name": "Pasta Cacio e Pepe",
       "short_description": "Creamy pasta with pecorino cheese and black pepper.",
-      "ingredients": "Spaghetti, Pecorino romano, Black pepper, Salt",
+      "ingredients": "Spaghetti, Pecorino romano, Black pepper",
       "cooking_time": 15,
       "recipe_image": "recipes/caciopepe-istockphoto-1401929088-1024x1024.jpg",
       "references": ""
@@ -89,7 +89,7 @@
     "fields": {
       "name": "Tiramisu",
       "short_description": "Classic Italian dessert with coffee, mascarpone, and cocoa.",
-      "ingredients": "Ladyfingers, Coffee, Mascarpone, Eggs, Sugar, Cocoa powder",
+      "ingredients": "Ladyfingers, Coffee, Mascarpone",
       "cooking_time": 30,
       "recipe_image": "recipes/tiramisu-inna-safa-BmrXxbVuqTc-unsplash.jpg",
       "references": ""
@@ -149,8 +149,8 @@
     "fields": {
       "name": "Summer salad",
       "short_description": "Fresh and colorful salad perfect for warm days.",
-      "ingredients": "Lettuce, Tomatoes, Cucumber, Olives, Feta, Olive oil, Lemon",
-      "cooking_time": 10,
+      "ingredients": "Lettuce, Tomatoes, Olive oil",
+      "cooking_time": 5,
       "recipe_image": "recipes/jez-timms-BHD2OxkYGSk-unsplash.jpg",
       "references": ""
     }
