@@ -1,0 +1,182 @@
+[
+  {
+    "model": "recipes.recipe",
+    "pk": 1,
+    "fields": {
+      "name": "Pizza Margherita",
+      "short_description": "Classic Italian pizza with tomato, mozzarella, and basil.",
+      "ingredients": "Pizza dough, Tomato sauce, Mozzarella, Basil, Olive oil, Salt",
+      "cooking_time": 25,
+      "recipe_image": "recipes/louis-hansel-cC0_UO1Obg4-unsplash.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 2,
+    "fields": {
+      "name": "Pasta Carbonara",
+      "short_description": "Creamy Roman pasta with eggs, cheese, and pancetta.",
+      "ingredients": "Spaghetti, Eggs, Pancetta, Parmesan, Pepper, Salt",
+      "cooking_time": 20,
+      "recipe_image": "recipes/studio-crevettes-VO5r54j8yc8-unsplash.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 3,
+    "fields": {
+      "name": "Pasta Aglio, Olio, Peperoncino",
+      "short_description": "Simple pasta with garlic, chili, and olive oil.",
+      "ingredients": "Spaghetti, Garlic, Chili flakes, Olive oil, Parsley, Salt",
+      "cooking_time": 15,
+      "recipe_image": "recipes/homemade-spaghetti-aglio-e-olio-600nw-2558556449.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 4,
+    "fields": {
+      "name": "Meatballs with tomato sauce",
+      "short_description": "Juicy meatballs simmered in a rich tomato sauce.",
+      "ingredients": "Ground beef, Breadcrumbs, Egg, Parmesan, Tomato sauce, Onion, Garlic, Basil, Salt, Pepper",
+      "cooking_time": 40,
+      "recipe_image": "recipes/meatballs-istockphoto-1010843754-1024x1024.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 5,
+    "fields": {
+      "name": "Pasta Cacio e Pepe",
+      "short_description": "Creamy pasta with pecorino cheese and black pepper.",
+      "ingredients": "Spaghetti, Pecorino romano, Black pepper, Salt",
+      "cooking_time": 15,
+      "recipe_image": "recipes/caciopepe-istockphoto-1401929088-1024x1024.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 6,
+    "fields": {
+      "name": "Pasta all'Amatriciana",
+      "short_description": "Spicy tomato pasta with guanciale and pecorino.",
+      "ingredients": "Spaghetti, Guanciale, Tomato sauce, Pecorino romano, Chili flakes, Salt",
+      "cooking_time": 25,
+      "recipe_image": "recipes/amatriciana-istockphoto-466400781-2048x2048.jpeg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 7,
+    "fields": {
+      "name": "Eggplants Parmigiana",
+      "short_description": "Layered baked eggplant with tomato sauce and cheese.",
+      "ingredients": "Eggplants, Tomato sauce, Mozzarella, Parmesan, Basil, Olive oil, Salt",
+      "cooking_time": 60,
+      "recipe_image": "recipes/parmigiana-moira-nazzari-Y9iaZNbUHtQ-unsplash.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 8,
+    "fields": {
+      "name": "Tiramisu",
+      "short_description": "Classic Italian dessert with coffee, mascarpone, and cocoa.",
+      "ingredients": "Ladyfingers, Coffee, Mascarpone, Eggs, Sugar, Cocoa powder",
+      "cooking_time": 30,
+      "recipe_image": "recipes/tiramisu-inna-safa-BmrXxbVuqTc-unsplash.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 9,
+    "fields": {
+      "name": "Risotto alla Milanese",
+      "short_description": "Creamy saffron risotto from Milan.",
+      "ingredients": "Arborio rice, Saffron, Butter, Parmesan, Onion, Broth, Salt, Pepper",
+      "cooking_time": 35,
+      "recipe_image": "recipes/risotto-istockphoto-1345140477-1024x1024.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 10,
+    "fields": {
+      "name": "Sfogliatelle",
+      "short_description": "Crispy shell-shaped pastry with sweet ricotta filling.",
+      "ingredients": "Puff pastry, Ricotta, Sugar, Cinnamon, Orange zest, Eggs",
+      "cooking_time": 70,
+      "recipe_image": "recipes/sfogliatelle-istockphoto-578093460-1024x1024.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 11,
+    "fields": {
+      "name": "Apple Pie",
+      "short_description": "Sweet pie filled with spiced apples.",
+      "ingredients": "Pie crust, Apples, Sugar, Cinnamon, Butter, Flour",
+      "cooking_time": 60,
+      "recipe_image": "recipes/apple_pie-photo-1638329261528-1932b0e63212.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 12,
+    "fields": {
+      "name": "Cantucci cookies",
+      "short_description": "Crunchy almond biscotti from Tuscany.",
+      "ingredients": "Flour, Sugar, Eggs, Almonds, Baking powder",
+      "cooking_time": 40,
+      "recipe_image": "recipes/cantucci-istockphoto-2232353145-1024x1024.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 13,
+    "fields": {
+      "name": "Summer salad",
+      "short_description": "Fresh and colorful salad perfect for warm days.",
+      "ingredients": "Lettuce, Tomatoes, Cucumber, Olives, Feta, Olive oil, Lemon",
+      "cooking_time": 10,
+      "recipe_image": "recipes/jez-timms-BHD2OxkYGSk-unsplash.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 14,
+    "fields": {
+      "name": "Potatoes Gateau",
+      "short_description": "Baked potato casserole with cheese and ham.",
+      "ingredients": "Potatoes, Eggs, Mozzarella, Ham, Parmesan, Breadcrumbs, Butter, Salt, Pepper",
+      "cooking_time": 50,
+      "recipe_image": "recipes/gateau-istockphoto-451646363-1024x1024.jpg",
+      "references": ""
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 15,
+    "fields": {
+      "name": "Pasta al Pesto",
+      "short_description": "Pasta tossed with fresh basil pesto.",
+      "ingredients": "Spaghetti, Basil, Pine nuts, Parmesan, Garlic, Olive oil, Salt",
+      "cooking_time": 20,
+      "recipe_image": "recipes/shibani-mishra-docP-fBTnjw-unsplash.jpg",
+      "references": ""
+    }
+  }
+]
