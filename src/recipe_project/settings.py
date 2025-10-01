@@ -129,6 +129,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 # Static files configuration for production
 if not DEBUG:
     # Use WhiteNoise to serve static files in production
@@ -138,19 +142,11 @@ if not DEBUG:
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     ]
-    # Include media files in static files for WhiteNoise to serve
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static',
-        BASE_DIR / 'media',  # Add media directory to static files
-    ]
 else:
     # Development-specific static files handling
     STATICFILES_FINDERS = [
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    ]
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static',
     ]
 
 MEDIA_URL = '/media/'
@@ -158,7 +154,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+# https:/ /docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

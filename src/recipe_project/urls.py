@@ -28,7 +28,7 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
 ]
 
-# for media files
+# for media files - serve in both development and production
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Serve static files during development
