@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load recipe_extras %}
 
 {% block title %}{{ recipe.name }} - Nomalyze{% endblock %}
 
@@ -10,7 +11,7 @@
         <!-- Recipe Image -->
         <div class="mb-6 sm:mb-10 lg:mb-0 main_recipe_image">
             <div class="overflow-hidden rounded-lg shadow-lg">
-                <img src="{{ recipe.recipe_image.url }}" alt="{{ recipe.name }}"
+                <img src="{{ recipe.recipe_image|media_to_static }}" alt="{{ recipe.name }}"
                     class="object-cover w-full aspect-square md:aspect-4/3 lg:aspect-square">
             </div>
         </div>
