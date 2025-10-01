@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Home - Nomalyze{% endblock %}
 
@@ -7,7 +8,7 @@
 <div class="flex overflow-hidden fixed inset-0 justify-center items-center">
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
-        <img src="{{ MEDIA_URL }}recipes/jez-timms-BHD2OxkYGSk-unsplash.jpg" alt="Delicious food"
+        <img src="{% static 'images/jez-timms-BHD2OxkYGSk-unsplash.jpg' %}" alt="Delicious food"
             class="object-cover w-full h-full">
         <div class="absolute inset-0 bg-black bg-opacity-40"></div>
     </div>
