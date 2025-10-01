@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Me - Nomalyze{% endblock %}
+
+{% block content %}
+<div class="container px-6 pt-20 pb-20 mx-auto mb-12">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="mt-12 mb-8 font-serif text-3xl font-bold text-accent-600">About the Developer</h1>
+
+        <div class="p-8 bg-white rounded-lg shadow-lg">
+            <!-- Intro -->
+            <div class="mb-8">
+                <h2 class="mb-4 text-2xl font-semibold text-accent-600">Nico Vece</h2>
+                <p class="mb-4 text-lg text-gray-700">
+                    Italian designer and full-stack developer based in Berlin. I'm a self-taught developer with formal training in design,
+                    bringing a unique perspective to web development that combines technical excellence with user-centered design.
+                </p>
+            </div>
+
+            <!-- Background -->
+            <div class="mb-8">
+                <h3 class="mb-3 text-xl font-semibold text-accent-600">Background</h3>
+                <p class="mb-3 text-gray-700">
+                    I trained in design at university and worked with a mentor in graphic design before managing the web and digital
+                    department in a firm. Since 2012, I've been working as a freelance consultant, helping clients with web development
+                    and digital solutions.
+                </p>
+            </div>
+
+            <!-- About Nomalyze -->
+            <div class="mb-8">
+                <h3 class="mb-3 text-xl font-semibold text-accent-600">About Nomalyze</h3>
+                <p class="mb-3 text-gray-700">
+                    Nomalyze is a Django-based recipe management application I developed as part of my Python web development journey.
+                    It demonstrates skills in full-stack development, data visualization, user authentication, and deployment.
+                    The app combines practical functionality with clean design to help users manage and analyze their recipes.
+                </p>
+            </div>
+
+            <!-- Skills -->
+            <div class="mb-8">
+                <h3 class="mb-3 text-xl font-semibold text-accent-600">Skills</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 text-sm font-medium rounded-full bg-accent-100 text-accent-700">Python</span>
+                    <span class="px-3 py-1 text-sm font-medium rounded-full bg-accent-100 text-accent-700">Django</span>
+                    <span class="px-3 py-1 text-sm font-medium rounded-full bg-accent-100 text-accent-700">Full-Stack Development</span>
+                    <span class="px-3 py-1 text-sm font-medium rounded-full bg-accent-100 text-accent-700">Graphic Design</span>
+                    <span class="px-3 py-1 text-sm font-medium rounded-full bg-accent-100 text-accent-700">Web Development</span>
+                    <span class="px-3 py-1 text-sm font-medium rounded-full bg-accent-100 text-accent-700">Digital Consulting</span>
+                </div>
+            </div>
+
+            <!-- Contact & Links -->
+            <div class="mb-8">
+                <h3 class="mb-4 text-xl font-semibold text-accent-600">Get in Touch</h3>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                        <h4 class="mb-2 font-medium text-gray-700">Email</h4>
+                        <a href="mailto:m@nicovece.com" class="text-accent-600 hover:text-accent-800 hover:underline">
+                            m@nicovece.com
+                        </a>
+                    </div>
+                    <div>
+                        <h4 class="mb-2 font-medium text-gray-700">Portfolio</h4>
+                        <a href="https://nicovece.github.io/cf-portfolio-astro/" target="_blank" rel="noopener noreferrer"
+                           class="text-accent-600 hover:text-accent-800 hover:underline">
+                            Visit My Portfolio
+                        </a>
+                    </div>
+                    <div>
+                        <h4 class="mb-2 font-medium text-gray-700">GitHub</h4>
+                        <a href="https://github.com/nicovece" target="_blank" rel="noopener noreferrer"
+                           class="text-accent-600 hover:text-accent-800 hover:underline">
+                            github.com/nicovece
+                        </a>
+                    </div>
+                    <div>
+                        <h4 class="mb-2 font-medium text-gray-700">LinkedIn</h4>
+                        <a href="https://www.linkedin.com/in/nicovece/" target="_blank" rel="noopener noreferrer"
+                           class="text-accent-600 hover:text-accent-800 hover:underline">
+                            linkedin.com/in/nicovece
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Links -->
+            <div class="pt-6 border-t border-gray-200">
+                <h3 class="mb-4 text-xl font-semibold text-accent-600">Project Links</h3>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                    <a href="https://github.com/nicovece/cf-recipe-app" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center px-6 py-3 font-medium text-white rounded-lg transition-all duration-300 bg-accent-600 hover:bg-accent-700">
+                        <svg class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        View on GitHub
+                    </a>
+                    <a href="https://cf-recipe-app.onrender.com" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center px-6 py-3 font-medium bg-white rounded-lg border border-accent-600 transition-all duration-300 text-accent-600 hover:bg-accent-50">
+                        <svg class="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        Live Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

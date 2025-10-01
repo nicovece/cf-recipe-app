@@ -2,6 +2,8 @@
 
 A smart Django web application for managing and analyzing recipes. Nomalyze allows you to create, store, and organize recipes with automatic difficulty calculation and advanced data analytics based on cooking time and ingredients.
 
+**🌐 Live Application:** [https://cf-recipe-app.onrender.com](https://cf-recipe-app.onrender.com)
+
 ## About the Name
 
 **Nomalyze** combines "nom" (the sound of eating) with "analyze" - perfectly capturing our app's dual purpose of helping you discover delicious recipes while providing intelligent data insights about your cooking patterns and preferences.
@@ -105,10 +107,34 @@ nomalyze/
         └── admin.py      # Admin interface
 ```
 
+## Maintainer & Contact
+
+**Maintained by:** Nico Vece
+
+**Contact:**
+- Email: m@nicovece.com
+- GitHub: [@nicovece](https://github.com/nicovece)
+- LinkedIn: [nicovece](https://www.linkedin.com/in/nicovece/)
+- Portfolio: [nicovece.github.io/cf-portfolio-astro](https://nicovece.github.io/cf-portfolio-astro/)
+
+## Getting Help
+
+If you encounter any issues or have questions:
+
+1. **Check the Documentation**: Review this README and code comments
+2. **Open an Issue**: Create an issue on the [GitHub repository](https://github.com/nicovece/cf-recipe-app/issues)
+3. **Contact the Maintainer**: Reach out via email at m@nicovece.com
+
 ## Contributing
 
-This is Nomalyze - a smart recipe management and analytics app. Feel free to contribute by adding new features or improving existing functionality.
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest new features
+- Submit pull requests
+- Improve documentation
+
+Please ensure your code follows Django best practices and includes appropriate tests.
 
 ## License
 
-[Add your license information here]
+MIT License - Feel free to use this project for learning and portfolio purposes.

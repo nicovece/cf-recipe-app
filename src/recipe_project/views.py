@@ -35,3 +35,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return render(request, "auth/logout.html")
+
+def about_view(request):
+    return render(request, "about.html")
