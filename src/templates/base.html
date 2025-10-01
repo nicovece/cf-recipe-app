@@ -23,7 +23,7 @@
                 <div class="flex justify-center items-center pb-4 space-x-4 md:pb-0">
                     {% block navigation %}
                     <a href="{% url 'recipes:home' %}"
-                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">Home</a>
+                        class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md hidden md:block">Home</a>
                     <a href="{% url 'recipes:recipe-list' %}"
                         class="px-3 py-1 text-sm font-medium border-b transition-all duration-300 border-accent-300 {% get_nav_classes 'text-accent-300' 'text-accent-600' %} hover:text-white hover:bg-accent-400 hover:border-accent-400 hover:rounded-md">Recipes</a>
                     <a href="{% url 'recipes:recipe-search' %}"

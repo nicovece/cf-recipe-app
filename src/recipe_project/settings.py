@@ -85,9 +85,10 @@ WSGI_APPLICATION = 'recipe_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Use PostgreSQL in production, SQLite in development
-if not DEBUG:
-    # Production - PostgreSQL
+# Database configuration
+# Use DATABASE_URL if provided (for connecting to Render DB locally or in production)
+# Otherwise use SQLite in development
+if os.getenv('DATABASE_URL'):
     import dj_database_url
     DATABASES = {
         'default': dj_database_url.config(
@@ -97,7 +98,7 @@ if not DEBUG:
         )
     }
 else:
-    # Development - SQLite
+    # Development - SQLite (when DATABASE_URL is not set)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
