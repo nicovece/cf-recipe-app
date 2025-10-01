@@ -114,7 +114,7 @@ def recipe_search(request):
                     'ingredients': recipe.ingredients,
                     'ingredient_count': ingredient_count,
                     'short_description': recipe.short_description,
-                    'recipe_image_url': recipe.recipe_image.url,
+                    'recipe_image_url': f'/static/images/{recipe.recipe_image}',
                     'detail_url': f"/recipes/{recipe.id}/"
                 })
             
